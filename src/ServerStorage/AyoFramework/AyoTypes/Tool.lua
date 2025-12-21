@@ -10,12 +10,11 @@ function Tool.new(ayoKey:string)
 			break;
 		end
 	end
-	assert(toolInstance ~= nil, `No tool with ayoKey '{ayoKey}' was found`)
-	assert(typeof(toolInstance) == "Instance" and toolInstance.ClassName == "Tool", "Root toolInstance of a Tool must be a Tool");
+	assert(toolInstance ~= nil, `No tool with ayoKey '{ayoKey}' was found`);
+	assert(typeof(toolInstance) == "Instance" and toolInstance.ClassName == "Tool", "Root instance of a Tool must be a Tool");
 	assert(toolInstance:GetAttribute("ayoKey"), "Root toolInstance must contain a valid ayoKey attribute");
-	
 
 	return {};
-end;
+end
 
 return Tool;

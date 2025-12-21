@@ -1,0 +1,13 @@
+# Project place file
+/BussedIn.rbxlx
+
+# Roblox Studio lock files
+/*.rbxlx.lock
+/*.rbxl.lock
+/BussedIn.rbxl
+/sourcemap.json
+/aftman.toml
+/default.project.json
+/rokit.toml
+/wally.lock
+/wally.toml

@@ -1,16 +1,43 @@
 local ServerStorage = game:GetService("ServerStorage");
 local AyoFolder = ServerStorage.AyoFramework;
-local Tool = require(ServerStorage.AyoFramework.AyoTypes.Tool)
 local Types = require(ServerStorage.AyoFramework.Types);
 
-local function GetUnits(folder:Folder, rootClassName:string)
+local rootClassNameMap = {
+    Tool = "Tool";
+    Placeable = "Model";
+    Interactable = "Model";
+};
+
+local usedAyoKeys = {};
+local function ValidateUnit(instance:Instance, ayoType:string)
+    local ayoKey = instance:GetAttribute("ayoKey");
+    local className = rootClassNameMap[ayoType];
+
+    assert(instance:IsA(className), `Root instance of '{ayoType}' must be '{className}'`);
+    assert(typeof(ayoKey)=="string", `Root instance of '{ayoType}' must contain valid [ayoKey] attribute`)
+    assert(usedAyoKeys[ayoKey] == nil, `{ayoType} with ayoKey '{ayoKey}' already exists, different {ayoType}s must have unique ayoKeys`);
+
+    if ayoType == "Tool" then
+        local activateModule = instance:FindFirstChild("Activate");
+        assert(activateModule and activateModule:IsA("ModuleScript"), "Root instance of 'Tool' must contain an 'Activate' module");
+        assert(typeof(require(activateModule))=="function", "'Activate' module must return a function");
+        
+    elseif ayoType == "Placeable" then
+
+    
+    elseif ayoType == "Interactable" then
+
+    
+    end
+    usedAyoKeys[ayoKey] = true;
+end
+
+local function GetUnits(folder:Folder, ayoType:string)
     local tbl = {};
     for index, instance in folder:GetChildren() do
-        local ayoKey = instance:GetAttribute("ayoKey");
-        assert(typeof(ayoKey)=="string", "Root instance of 'Tool' must contain valid attribute [ayoKey]");
-        assert(instance:IsA(rootClassName), `Root instance of '{folder.Name}' must be a '{rootClassName}'`);
+        ValidateUnit(instance, ayoType);
         tbl[index] = {
-            ayoKey = ayoKey;
+            ayoKey = instance:GetAttribute("ayoKey");
             instance = instance;
         };
     end
@@ -23,9 +50,8 @@ local items:{
     Interactables:  {{ayoKey:string, instance:Model}};
 } = {
     Tools = GetUnits(AyoFolder.Tools, "Tool");
-    Placeables = GetUnits(AyoFolder.Placeables, "Model");
+    Placeables = GetUnits(AyoFolder.Placeables, "Placeable");
+    Interactables = GetUnits(AyoFolder.Interactables, "Interactable");
 };
-
-
 
 return items;

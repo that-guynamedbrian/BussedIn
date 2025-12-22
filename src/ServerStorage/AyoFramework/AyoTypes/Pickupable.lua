@@ -1,0 +1,30 @@
+local ServerStorage = game:GetService("ServerStorage");
+local Types = require(ServerStorage.AyoFramework.Types);
+local Pickupable = {}::Types.PickupableAyo;
+
+function _len(tbl)
+   local n = 0;
+   for _, _ in tbl do
+      n += 1;
+   end
+   return n;
+end
+
+function Pickupable:Equip(char:Types.CharacterAyo)
+   local inHand = char.InHand;
+   if inHand then 
+      inHand:Unequip(char);
+   end
+   char.InHand = self;
+   self.Held = true;
+end
+
+function Pickupable:Unequip()
+   if not self.Held then
+      warn("Not in hand");
+      return;
+   end
+   local char = self.HeldBy
+end
+
+return Pickupable;

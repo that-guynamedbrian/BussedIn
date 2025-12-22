@@ -1,0 +1,3 @@
+local Characters = {};
+
+return Characters;

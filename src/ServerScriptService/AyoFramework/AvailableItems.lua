@@ -4,7 +4,7 @@ local Types = require(ServerStorage.AyoFramework.Types);
 
 local rootClassNameMap = {
    Tool = "Tool";
-   Placeable = "Model";
+   Placeable = "Tool";
    Interactable = "Model";
 }
 

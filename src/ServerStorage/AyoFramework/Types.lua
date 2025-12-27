@@ -34,7 +34,7 @@ export type PlayerAyo = {
 
 export type PickupableAyo = {
    Held: boolean;
-   HeldBy: string;
+   HeldBy: CharacterAyo;
 
    Pickup: (self:PickupableAyo, char:CharacterAyo)->();
    Equip: (self:PickupableAyo, char:CharacterAyo)->();
@@ -50,7 +50,7 @@ export type ToolAyo = {
 } & PickupableAyo;
 
 export type PlaceableAyo = {
-   Instance: Model;
+   Instance: Tool;
    AyoType: "Placeable";
 
    Place: (self:PlaceableAyo, char:CharacterAyo, location:CFrame)->();

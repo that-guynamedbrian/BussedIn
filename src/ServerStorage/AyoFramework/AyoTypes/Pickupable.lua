@@ -17,6 +17,7 @@ function Pickupable:Equip(char:Types.CharacterAyo)
    end
    char.InHand = self;
    self.Held = true;
+   self.HeldBy = char;
 end
 
 function Pickupable:Unequip()
@@ -24,7 +25,8 @@ function Pickupable:Unequip()
       warn("Not in hand");
       return;
    end
-   local char = self.HeldBy
+   local char = self.HeldBy;
+   local grip = char:FindFirstChild("Right Arm")
 end
 
 return Pickupable;

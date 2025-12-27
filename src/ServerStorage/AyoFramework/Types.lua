@@ -1,3 +1,4 @@
+
 export type AyoUnit = {
    Instance: Instance;
    AyoType: string;
@@ -63,4 +64,4 @@ export type InteractableAyo = {
    Interact: (self:InteractableAyo, char:CharacterAyo)->();
 } & AyoUnit;
 
-return nil;
+return {};

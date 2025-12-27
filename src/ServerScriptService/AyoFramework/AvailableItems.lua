@@ -9,10 +9,13 @@ local rootClassNameMap = {
 }
 
 local usedAyoKeys = {};
-local function ValidateUnit(instance:Instance, ayoType:string)
+---comment
+---@param instance any
+---@param ayoType string
+local function ValidateUnit(instance, ayoType)
    local ayoKey = instance:GetAttribute("ayoKey");
    local className = rootClassNameMap[ayoType];
-
+   
    assert(instance:IsA(className), `Root instance of '{ayoType}' must be '{className}' - error key: {ayoKey}`);
    assert(typeof(ayoKey) == "string", `Root instance of '{ayoType}' must contain valid [ayoKey] attribute - `)
    assert(usedAyoKeys[ayoKey] == nil, `{ayoType} with ayoKey '{ayoKey}' already exists, different {ayoType}s must have unique ayoKeys`);

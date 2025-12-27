@@ -5,14 +5,16 @@ local Pickupable = {}::Types.PickupableAyo;
 function _len(tbl)
    local n = 0;
    for _, _ in tbl do
-      n += 1;
+      n += 1
    end
    return n;
 end
 
-function Pickupable:Equip(char:Types.CharacterAyo)
+---comment
+---@param char any
+function Pickupable:Equip(char)
    local inHand = char.InHand;
-   if inHand then 
+   if inHand then
       inHand:Unequip(char);
    end
    char.InHand = self;
@@ -20,6 +22,7 @@ function Pickupable:Equip(char:Types.CharacterAyo)
    self.HeldBy = char;
 end
 
+---comment
 function Pickupable:Unequip()
    if not self.Held then
       warn("Not in hand");

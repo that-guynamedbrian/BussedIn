@@ -1,20 +1,62 @@
 {
-    "$schema": "https://raw.githubusercontent.com/EmmyLuaLs/emmylua-analyzer-rust/refs/heads/main/crates/emmylua_code_analysis/resources/schema.json",
-    "workspace": {
-        "library": [],
-        "workspaceRoots": [
-            "Contents/mods/YourMod/42/media/lua"
-        ]
+    "codeAction": {
+        "insertSpace": false
     },
-    "runtime": {
-        "requirePattern": [
-            "shared/?.lua",
-            "client/?.lua",
-            "server/?.lua"
-        ],
-        "version": "Lua5.1"
+    "codeLens": {
+        "enable": false
+    },
+    "completion": {
+        "autoRequire": true,
+        "autoRequireFunction": "require",
+        "autoRequireNamingConvention": "keep",
+        "autoRequireSeparator": ".",
+        "baseFunctionIncludesName": true,
+        "callSnippet": false,
+        "enable": true,
+        "postfix": "@"
     },
     "diagnostics": {
-        "disable": ["unnecessary-if", "undefined-global"]
+        "diagnosticInterval": 500,
+        "disable": ["undefined-global","syntax-error","unnecessary-if"],
+        "enable": false,
+        "enables": ["unused"],
+        "globals": [],
+        "globalsRegex": [],
+        "severity": {}
+    },
+    "documentColor": {
+        "enable": false
+    },
+    "hint": {
+        "enable": true,
+        "enumParamHint": true,
+        "indexHint": true,
+        "localHint": true,
+        "metaCallHint": true,
+        "overrideHint": true,
+        "paramHint": false
+    },
+    "hover": {
+        "customDetail": null,
+        "enable": true
+    },
+    "inlineValues": {
+        "enable": true
+    },
+    "references": {
+        "enable": true,
+        "fuzzySearch": true,
+        "shortStringSearch": false
+    },
+    "semanticTokens": {
+        "enable": false,
+        "renderDocumentationMarkup": false
+    },
+    "strict": {
+        "arrayIndex": true,
+        "docBaseConstMatchBaseType": true,
+        "metaOverrideFileDefine": true,
+        "requirePath": true,
+        "typeCall": false
     }
 }

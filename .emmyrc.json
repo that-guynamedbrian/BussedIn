@@ -1,9 +1,9 @@
 {
     "codeAction": {
-        "insertSpace": false
+        "insertSpace": true
     },
     "codeLens": {
-        "enable": false
+        "enable": true
     },
     "completion": {
         "autoRequire": true,
@@ -34,10 +34,10 @@
         "localHint": true,
         "metaCallHint": true,
         "overrideHint": true,
-        "paramHint": false
+        "paramHint": true
     },
     "hover": {
-        "customDetail": null,
+        "customDetail": 255,
         "enable": true
     },
     "inlineValues": {
@@ -49,7 +49,7 @@
         "shortStringSearch": false
     },
     "semanticTokens": {
-        "enable": false,
+        "enable": true,
         "renderDocumentationMarkup": false
     },
     "strict": {

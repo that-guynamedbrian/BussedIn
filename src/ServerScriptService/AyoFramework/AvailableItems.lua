@@ -1,6 +1,7 @@
 local ServerStorage = game:GetService("ServerStorage");
 local AyoFolder = ServerStorage.AyoFramework;
 local Types = require(ServerStorage.AyoFramework.Types);
+local Tool = require("src.ServerStorage.AyoFramework.AyoTypes.Tool")
 
 local rootClassNameMap = {
    Tool = "Tool";
@@ -9,8 +10,8 @@ local rootClassNameMap = {
 }
 
 local usedAyoKeys = {};
----comment
----@param instance any
+
+---@param instance Instance
 ---@param ayoType string
 local function ValidateUnit(instance, ayoType)
    local ayoKey = instance:GetAttribute("ayoKey");
@@ -23,15 +24,21 @@ local function ValidateUnit(instance, ayoType)
 
    if ayoType == "Tool" then
       local activateModule = instance:FindFirstChild("Activate");
+      local handle = instance:FindFirstChild("Handle");
       assert(activateModule and activateModule:IsA("ModuleScript"), "Root instance of 'Tool' must contain an 'Activate' module");
       assert(typeof(require(activateModule)) == "function", "'Activate' module must return a function");
+      assert(handle and handle:IsA("BasePart"), "")
    elseif ayoType == "Placeable" then
    elseif ayoType == "Interactable" then
    end
    usedAyoKeys[ayoKey] = true;
 end
 
-local function GetUnits(folder:Folder, ayoType:string)
+
+---@param folder Folder
+---@param ayoType string
+---@return table<number,AyoUnit>
+local function GetUnits(folder, ayoType)
    local tbl = {};
    for index, instance in folder:GetChildren() do
       ValidateUnit(instance, ayoType);

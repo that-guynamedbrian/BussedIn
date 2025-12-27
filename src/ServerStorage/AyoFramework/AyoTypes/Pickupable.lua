@@ -1,5 +1,8 @@
 local ServerStorage = game:GetService("ServerStorage");
 local Types = require(ServerStorage.AyoFramework.Types);
+
+
+---@class PickupableAyo:AyoUnit
 local Pickupable = {}::Types.PickupableAyo;
 
 function _len(tbl)

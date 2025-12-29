@@ -3,7 +3,9 @@ local Types = require(ServerStorage.AyoFramework.Types);
 
 
 ---@class PickupableAyo:AyoUnit
-local Pickupable = {}::Types.PickupableAyo;
+---@field Instance Tool
+---@field HeldBy CharacterAyo
+local Pickupable = {};
 
 function _len(tbl)
    local n = 0;
@@ -14,20 +16,21 @@ function _len(tbl)
 end
 
 ---comment
----@param char any
+---@param char CharacterAyo
 function Pickupable:Equip(char)
    local inHand = char.InHand;
+   local hum:Humanoid = char.Instance:FindFirstChild("Humanoid");
    if inHand then
       inHand:Unequip(char);
    end
    char.InHand = self;
-   self.Held = true;
    self.HeldBy = char;
+   hum:EquipTool(self.Instance)
 end
 
 ---comment
 function Pickupable:Unequip()
-   if not self.Held then
+   if self.HeldBy == nil then
       warn("Not in hand");
       return;
    end

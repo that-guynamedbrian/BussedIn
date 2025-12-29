@@ -27,9 +27,16 @@ local function ValidateUnit(instance, ayoType)
       local handle = instance:FindFirstChild("Handle");
       assert(activateModule and activateModule:IsA("ModuleScript"), "Root instance of 'Tool' must contain an 'Activate' module");
       assert(typeof(require(activateModule)) == "function", "'Activate' module must return a function");
-      assert(handle and handle:IsA("BasePart"), "")
+      assert(handle and handle:IsA("BasePart"), "");
    elseif ayoType == "Placeable" then
+      local handle = instance:FindFirstChild("Handle");
+      assert(handle and handle:IsA("BasePart"), "");
    elseif ayoType == "Interactable" then
+      local prompt = instance:FindFirstAncestorOfClass("ProximityPrompt");
+      local triggeredModule = instance:FindFirstChild("Triggered");
+      assert(prompt, "Root instance of 'Interactable' must contain a ProximityPrompt");
+      assert(triggeredModule and triggeredModule:IsA("ModuleScript"), "Root instance of 'Tool' must contain a 'Triggered' module");
+      assert(typeof(require(triggeredModule)) == "function", "'Activate' module must return a function");
    end
    usedAyoKeys[ayoKey] = true;
 end
@@ -40,7 +47,7 @@ end
 ---@return table<number,AyoUnit>
 local function GetUnits(folder, ayoType)
    local tbl = {};
-   for index, instance in folder:GetChildren() do
+   for _, instance in folder:GetChildren() do
       ValidateUnit(instance, ayoType);
       tbl[instance:GetAttribute("ayoKey")] = instance;
    end

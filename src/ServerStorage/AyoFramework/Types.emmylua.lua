@@ -7,12 +7,9 @@
 ---@class CharacterAyo : AyoUnit
 ---@field Instance Model
 ---@field AyoType "Character"
----@field Inventory [[]]
-
+---@field Inventory table<number,PickupableAyo>
 
 ---@type CharacterAyo
-local char = {}
-local a = char.Inventory
-local b = a[1]
-
-return nil;
+local a = {}
+local b = a.Inventory
+return nil

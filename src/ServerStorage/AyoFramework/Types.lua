@@ -34,6 +34,7 @@ export type PlayerAyo = {
 } & CharacterAyo;
 
 export type PickupableAyo = {
+   Instance:Tool;
    Held: boolean;
    HeldBy: CharacterAyo;
 

@@ -12,10 +12,5 @@
 ---@field Equip fun(self:CharacterAyo, toEquip:PickupableAyo)
 ---@field Unequip fun(self:CharacterAyo, toUnequip:PickupableAyo)
 ---@field Remove fun(self:CharacterAyo, count:table<string,number>) count: {ayoKey: numberToRemove}
----@
 
----@type CharacterAyo
-local a = {}
-local b =
-local d =
 return nil

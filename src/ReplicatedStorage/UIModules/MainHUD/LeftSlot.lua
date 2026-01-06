@@ -1,4 +1,5 @@
-local Roact = require("Packages.roact")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Roact = require(ReplicatedStorage.Packages.roact)
 
 return Roact.createElement("Frame", {
 	Position = UDim2.new(0.011, 0, 0.334, 0),

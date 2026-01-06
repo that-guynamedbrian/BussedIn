@@ -1,10 +1,12 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local UIMaid = require(ReplicatedStorage.UIModules.UIMaid)
+local ReplicatedStorage = game:GetService("ReplicatedStorage");
+local Roact = require(ReplicatedStorage.Packages.roact);
 
-return function(HUDRoot:ScreenGui)
-	local HUDRoot = game:GetService("ReplicatedStorage").UserInterface.MainHUD -- delete this line 
-	local buttonsFrame = HUDRoot.LeftButtonsFrame;
-	
-	local inventoryButton = buttonsFrame.Inventory;
-	inventoryButton.Activated:Connect(require(script.Inventory))
-end
+local LeftSlot = require(script.LeftSlot);
+local Hotbar = require(script.Hotbar);
+local TopRight = require(script.TopRight);
+
+return Roact.createElement("ScreenGui", {}, {
+	LeftButtonsFrame = LeftSlot(),
+	SlotFrame = Hotbar(),
+	TopRightFrame = TopRight(),
+})

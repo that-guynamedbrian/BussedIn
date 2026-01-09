@@ -1,8 +1,6 @@
-local AccountService = game:GetService("AccountService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local React = require(ReplicatedStorage.Packages.React)
-local ReactRoblox = require(ReplicatedStorage.Packages.ReactRoblox)
 local Inventory = require(ReplicatedStorage.UIModules.Inventory)
 local MainHUD = require(ReplicatedStorage.UIModules.MainHUD)
 

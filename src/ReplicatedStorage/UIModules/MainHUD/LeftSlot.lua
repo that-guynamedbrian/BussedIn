@@ -9,7 +9,6 @@ end
 
 local function ButtonIcon(imageid:string, activatedFunc:((any)->any)?)
     return React.createElement("ImageButton", {
-		
 		ScaleType = Enum.ScaleType.Fit,
 		BorderColor3 = Color3.fromRGB(0, 0, 0),
 		Size = UDim2.new(0.854799926, 0, 0.16714561, 0),
@@ -26,50 +25,37 @@ end
 return function(props)
     positionIndex = -1
     return React.createElement("ImageLabel", {
+        ScaleType = Enum.ScaleType.Fit,
         Image = "rbxassetid://116561793149912",
         AnchorPoint = Vector2.new(0,2),
         BorderColor3 = Color3.fromRGB(0, 0, 0),
         BackgroundTransparency = 1,
-        Position = UDim2.new(0.0109999999, 0, 1, 0),
-        Size = UDim2.new(0.0710000023, 0, 0.644999981, 0),
+        Position = UDim2.new(-0.02, 0, 1, 0),
+        Size = UDim2.new(0.133, 0, 0.706, 0),
         BorderSizePixel = 0,
         BackgroundColor3 = Color3.fromRGB(255, 255, 255),
     }, {
-        UIAspectRatioConstraint = React.createElement("UIAspectRatioConstraint",{
-            AspectRatio = 0.0710000023/0.644999981 * 16/9
-        }),
+        --UIAspectRatioConstraint = React.createElement("UIAspectRatioConstraint",{
+        --}),
 
         ["NPC"] = ButtonIcon("rbxassetid://105665850741368"),
 
-        ["Inventory"] = ButtonIcon("rbxassetid://123467898068713", function()
-            props.setInventoryEnabled(not props.inventoryEnabled)
-        end),
+        ["Inventory"] = ButtonIcon("rbxassetid://123467898068713",props.InventoryToggleState.enable),
 
         ["Avatar"] = ButtonIcon("rbxassetid://104956935339886"),
 
         ["Transport"] = ButtonIcon("rbxassetid://139449258354411"),
 
         ["Anim"] = React.createElement("ImageButton", {
-		ScaleType = Enum.ScaleType.Fit,
-		BorderColor3 = Color3.fromRGB(0, 0, 0),
-		Size = UDim2.new(0.456259668, 0, 0.0788352787, 0),
-		Image = "rbxassetid://95936900854248",
-		BackgroundTransparency = 1,
-		Position = UDim2.new(1.76769769, 0, -0.401803881, 0),
-		ZIndex = 11,
-		BorderSizePixel = 0,
-		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-	}, {}),
-
-        -- ["BG"] = React.createElement("ImageLabel", {
-        --     ScaleType = Enum.ScaleType.Fit,
-        --     BorderColor3 = Color3.fromRGB(0, 0, 0),
-        --     Image = "rbxassetid://116561793149912",
-        --     BackgroundTransparency = 1,
-        --     Position = UDim2.new(-0.124087594, 0, -0.0237720963, 0),
-        --     Size = UDim2.new(1.24461174, 0, 1.04535484, 0),
-        --     BorderSizePixel = 0,
-        --     BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-        -- }, {})
+            ScaleType = Enum.ScaleType.Fit,
+            BorderColor3 = Color3.fromRGB(0, 0, 0),
+            Size = UDim2.new(0.456259668, 0, 0.0788352787, 0),
+            Image = "rbxassetid://95936900854248",
+            BackgroundTransparency = 1,
+            Position = UDim2.new(1.76769769, 0, -0.401803881, 0),
+            ZIndex = 11,
+            BorderSizePixel = 0,
+            BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+	    }, {})
     })
 end

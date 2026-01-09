@@ -128,20 +128,20 @@ local function createItemIcon(categoryName:string) -- replace with itemName late
 	})
 end
 
-local function createInnerTab(categoryName:string)
+local function createInnerTab(props)
 	return React.createElement("ScrollingFrame", {
+		Visible = props.Visible,
 		ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0),
-		Active = true,
 		ScrollBarThickness = 0,
 		BackgroundTransparency = 1,
 		Position = UDim2.new(-0.0469999984, 0, 0.134000003, 0),
 		Size = UDim2.new(1.06700003, 0, 0.838999987, 0),
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	},{
-		[1] = createItemIcon(categoryName),
-		[2] = createItemIcon(categoryName),
-		[3] = createItemIcon(categoryName),
-		[4] = createItemIcon(categoryName),
+		[1] = createItemIcon(props.categoryName),
+		[2] = createItemIcon(props.categoryName),
+		[3] = createItemIcon(props.categoryName),
+		[4] = createItemIcon(props.categoryName),
 		["UIGridLayout"] = React.createElement("UIGridLayout", {
 			SortOrder = Enum.SortOrder.LayoutOrder,
 			CellSize = UDim2.new(0.319999993, 0, 0.100000001, 0),
@@ -150,25 +150,28 @@ local function createInnerTab(categoryName:string)
 	})
 end
 
-local function createCategoryButton(categoryName:string, position:UDim2, setTab)
+local function CategoryButton(props)
+	local onClick = React.useCallback(function()
+		props.setTab(props.categoryName)
+	end, {props.setTab, props.categoryName})
+	
 	return React.createElement("ImageButton", {
 		ScaleType = Enum.ScaleType.Fit,
+		Visible = true,
 		HoverImage = "rbxassetid://139453088766137",
 		Size = UDim2.new(0.535293043, 0, 0.0743052289, 0),
 		BackgroundTransparency = 1,
-		Position = position,
+		Position = props.position,
 		Image = "rbxassetid://101385383771304",
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-		[React.Event.Activated] = function()
-			setTab(categoryName)
-		end
+		[React.Event.Activated] = onClick
 	}, {
 		["TextLabel"] = React.createElement("TextLabel", {
 			FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.Heavy, Enum.FontStyle.Normal),
 			TextSize = 14,
 			Size = UDim2.new(0.551451445, 0, 0.41802147, 0),
 			TextColor3 = Color3.fromRGB(255, 255, 255),
-			Text = categoryName,
+			Text = props.categoryName,
 			FontSize = Enum.FontSize.Size14,
 			TextWrapped = true,
 			BackgroundTransparency = 1,
@@ -210,9 +213,7 @@ return function(props)
 				Position = UDim2.new(0.858796299, 0, 0.146666661, 0),
 				Size = UDim2.new(0.120370373, 0, 0.693333328, 0),
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-				[React.Event.Activated] = function()
-					props.setInventoryEnabled(false)
-				end
+				[React.Event.Activated] = props.InventoryToggleState.disable
 			}, {}),
 
 			["InventoryText"] = React.createElement("TextLabel", {
@@ -243,13 +244,27 @@ return function(props)
 			ZIndex = 2,
 			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		}, {
-			["ToolsCategory"] = createCategoryButton("TOOLS", UDim2.fromScale(-0.052, 0.041), setTab),
+			["ToolsCategory"] = React.createElement(CategoryButton,{
+				categoryName = "TOOLS",
+				position = UDim2.fromScale(-0.052, 0.041),
+				setTab = setTab
+			}),
 
-			["PlaceablesCategory"] = createCategoryButton("PLACEABLES", UDim2.fromScale(0.493, 0.041), setTab),
+			["PlaceablesCategory"] = React.createElement(CategoryButton,{
+				categoryName = "PLACEABLES",
+				position = UDim2.fromScale(0.493, 0.041),
+				setTab = setTab
+			}),
 
-			["PlaceablesInnerTabs"] = (currentTab == "PLACEABLES") and createInnerTab("Placeable"),
+			["PlaceablesInnerTabs"] = React.createElement(createInnerTab,{
+				categoryName = "Placeable",
+				Visible = currentTab == "PLACEABLES"
+			}),
 
-			["ToolsInnerTabs"] = (currentTab == "TOOLS") and createInnerTab("Tool"),
+			["ToolsInnerTabs"] = React.createElement(createInnerTab,{
+				categoryName ="Tool",
+				Visible = currentTab == "TOOLS"
+			}),
 
 			["UIAspectRatioConstraint"] = React.createElement("UIAspectRatioConstraint", {
 				AspectRatio = 0.6599999666213989,

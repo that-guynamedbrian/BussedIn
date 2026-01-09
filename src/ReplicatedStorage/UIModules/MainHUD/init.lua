@@ -1,5 +1,8 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Hotbar = require(script.Hotbar)
 local LeftSlot = require(script.LeftSlot)
+local TopRight = require(script.TopRight)
 local React = require(ReplicatedStorage.Packages.React)
 
 
@@ -8,8 +11,8 @@ return function(props)
 			Size = UDim2.fromScale(1,1),
 			Transparency = 1,
 		}, {
-			LeftButtonsFrame = React.createElement(LeftSlot,props),--[[
-			SlotFrame = Hotbar(),
-			TopRightFrame = TopRight(),]]
+			LeftButtonsFrame = React.createElement(LeftSlot,props),
+			SlotFrame = React.createElement(Hotbar),
+			TopRightFrame = React.createElement(TopRight)
 		})
 	end

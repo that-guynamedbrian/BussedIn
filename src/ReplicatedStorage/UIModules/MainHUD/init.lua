@@ -3,11 +3,11 @@ local LeftSlot = require(script.LeftSlot)
 local React = require(ReplicatedStorage.Packages.React)
 
 
-return function()
-	return React.createElement("ScreenGui", {
+return React.createElement("Frame", {
+		Size = UDim2.fromScale(1,1),
+		Transparency = 1,
 	}, {
-		LeftButtonsFrame = React.createElement(LeftSlot),--[[
+		LeftButtonsFrame = LeftSlot,--[[
 		SlotFrame = Hotbar(),
 		TopRightFrame = TopRight(),]]
 	})
-end

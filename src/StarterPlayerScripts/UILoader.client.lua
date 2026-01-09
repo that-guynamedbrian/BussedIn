@@ -8,5 +8,9 @@ local RootUI = require(ReplicatedStorage.RootUI)
 
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
-local root = ReactRoblox.createRoot(playerGui)
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = playerGui
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+screenGui.IgnoreGuiInset = true
+local root = ReactRoblox.createRoot(screenGui)
 root:render(React.createElement(RootUI))

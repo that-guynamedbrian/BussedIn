@@ -15,10 +15,8 @@ return function()
         setInventoryEnabled = setInventoryEnabled;
     }
 
-    return React.createElement("Frame",{
-        Size = UDim2.fromScale(1, 1),
-        BackgroundTransparency = 1
-    },{
+    return React.createElement(React.Fragment, nil, {
+        UIStroke = React.createElement("UIStroke"),
         MainHUD = HUDEnabled and React.createElement(MainHUD, globalprops),
         Inventory = InventoryEnabled and React.createElement(Inventory, globalprops)
     })

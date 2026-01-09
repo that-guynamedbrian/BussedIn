@@ -16,7 +16,8 @@ local function ButtonIcon(imageid:string, position:UDim2, activatedFunc:((any)->
 	}, {})
 end
 
-return React.createElement("Frame", {
+return function(props)
+    return React.createElement("Frame", {
         AnchorPoint = Vector2.new(0,0.5),
         BorderColor3 = Color3.fromRGB(0, 0, 0),
         BackgroundTransparency = 1,
@@ -32,7 +33,7 @@ return React.createElement("Frame", {
         ["NPC"] = ButtonIcon("rbxassetid://105665850741368", UDim2.new(0.0364963487, 0, 0.00682601379, 0)),
 
         ["Inventory"] = ButtonIcon("rbxassetid://123467898068713", UDim2.new(0.0364963487, 0, 0.656047106, 0), function()
-            print("a")
+            props.setInventoryEnabled(true)
         end),
 
         ["Avatar"] = ButtonIcon("rbxassetid://104956935339886", UDim2.new(0.0364963487, 0, 0.817689836, 0)),
@@ -52,3 +53,4 @@ return React.createElement("Frame", {
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
         }, {})
     })
+end

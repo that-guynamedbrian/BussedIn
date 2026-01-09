@@ -1,8 +1,9 @@
+--!strict
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local React = require(ReplicatedStorage.Packages.React)
 
-local function createItemIcon()
+local function createItemIcon(categoryName:string) -- replace with itemName later
 	return React.createElement("ImageButton", {
 		ScaleType = Enum.ScaleType.Fit,
 
@@ -15,7 +16,6 @@ local function createItemIcon()
 	}, {
 		["ImageLabel"] = React.createElement("ImageLabel", {
 			ScaleType = Enum.ScaleType.Fit,
-	
 			Image = "rbxassetid://140624922048936",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.227649018, 0, 0.192578718, 0),
@@ -28,8 +28,7 @@ local function createItemIcon()
 			TextSize = 14,
 			Size = UDim2.new(0.378614932, 0, 0.162858352, 0),
 			TextColor3 = Color3.fromRGB(0, 91, 175),
-	
-			Text = "Item Name",
+			Text = categoryName.." Name",
 			FontSize = Enum.FontSize.Size14,
 			TextWrapped = true,
 			BackgroundTransparency = 1,
@@ -129,7 +128,7 @@ local function createItemIcon()
 	})
 end
 
-local function createInnerTab()
+local function createInnerTab(categoryName:string)
 	return React.createElement("ScrollingFrame", {
 		ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0),
 		Active = true,
@@ -139,6 +138,10 @@ local function createInnerTab()
 		Size = UDim2.new(1.06700003, 0, 0.838999987, 0),
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	},{
+		[1] = createItemIcon(categoryName),
+		[2] = createItemIcon(categoryName),
+		[3] = createItemIcon(categoryName),
+		[4] = createItemIcon(categoryName),
 		["UIGridLayout"] = React.createElement("UIGridLayout", {
 			SortOrder = Enum.SortOrder.LayoutOrder,
 			CellSize = UDim2.new(0.319999993, 0, 0.100000001, 0),
@@ -147,7 +150,7 @@ local function createInnerTab()
 	})
 end
 
-local function createCategoryButton(categoryName:string, position:UDim2)
+local function createCategoryButton(categoryName:string, position:UDim2, setTab)
 	return React.createElement("ImageButton", {
 		ScaleType = Enum.ScaleType.Fit,
 		HoverImage = "rbxassetid://139453088766137",
@@ -156,6 +159,9 @@ local function createCategoryButton(categoryName:string, position:UDim2)
 		Position = position,
 		Image = "rbxassetid://101385383771304",
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		[React.Event.Activated] = function()
+			setTab(categoryName)
+		end
 	}, {
 		["TextLabel"] = React.createElement("TextLabel", {
 			FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.Heavy, Enum.FontStyle.Normal),
@@ -174,7 +180,9 @@ local function createCategoryButton(categoryName:string, position:UDim2)
 	})
 end
 
-return React.createElement("Frame", {
+return function(props)
+	local currentTab, setTab = React.useState("TOOLS")
+	return React.createElement("Frame", {
 	BackgroundTransparency = 1,
 	Size = UDim2.new(1, 0, 1, 0),
 	BackgroundColor3 = Color3.fromRGB(255, 255, 255),
@@ -196,12 +204,14 @@ return React.createElement("Frame", {
 
 		["Close"] = React.createElement("ImageButton", {
 			ScaleType = Enum.ScaleType.Fit,
-	
 			Image = "rbxassetid://96227766790838",
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.858796299, 0, 0.146666661, 0),
 			Size = UDim2.new(0.120370373, 0, 0.693333328, 0),
 			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+			[React.Event.Activated] = function()
+				props.setInventoryEnabled(false)
+			end
 		}, {}),
 
 		["InventoryText"] = React.createElement("TextLabel", {
@@ -232,13 +242,13 @@ return React.createElement("Frame", {
 		ZIndex = 2,
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 	}, {
-		["ToolsCategory"] = createCategoryButton("TOOLS", UDim2.fromScale(-0.052, 0.041)),
+		["ToolsCategory"] = createCategoryButton("TOOLS", UDim2.fromScale(-0.052, 0.041), setTab),
 
-		["PlaceablesCategory"] = createCategoryButton("PLACEABLES", UDim2.fromScale(0.493, 0.041)),
+		["PlaceablesCategory"] = createCategoryButton("PLACEABLES", UDim2.fromScale(0.493, 0.041), setTab),
 
-		["PlaceablesInnerTabs"] = createInnerTab(),
+		["PlaceablesInnerTabs"] = (currentTab == "PLACEABLES") and createInnerTab("Placeable"),
 
-		["ToolsInnerTabs"] = createInnerTab(),
+		["ToolsInnerTabs"] = (currentTab == "TOOLS") and createInnerTab("Tool"),
 
 		["UIAspectRatioConstraint"] = React.createElement("UIAspectRatioConstraint", {
 			AspectRatio = 0.6599999666213989,
@@ -264,3 +274,4 @@ return React.createElement("Frame", {
 		BackgroundColor3 = Color3.fromRGB(0, 0, 0),
 	}, {}),
 })
+end

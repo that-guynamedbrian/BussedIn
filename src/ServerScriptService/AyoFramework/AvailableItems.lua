@@ -1,7 +1,6 @@
 local ServerStorage = game:GetService("ServerStorage");
 local AyoFolder = ServerStorage.AyoFramework;
-local Types = require(ServerStorage.AyoFramework.Types);
-local Tool = require("src.ServerStorage.AyoFramework.AyoTypes.Tool")
+-- local Types = require(ServerStorage.AyoFramework.Types);
 
 local rootClassNameMap = {
    Tool = "Tool";
@@ -11,9 +10,7 @@ local rootClassNameMap = {
 
 local usedAyoKeys = {};
 
----@param instance Instance
----@param ayoType string
-local function ValidateUnit(instance, ayoType)
+local function ValidateUnit(instance:Instance, ayoType:string)
    local ayoKey = instance:GetAttribute("ayoKey");
    local className = rootClassNameMap[ayoType];
    
@@ -41,11 +38,7 @@ local function ValidateUnit(instance, ayoType)
    usedAyoKeys[ayoKey] = true;
 end
 
-
----@param folder Folder
----@param ayoType string
----@return table<number,AyoUnit>
-local function GetUnits(folder, ayoType)
+local function GetUnits(folder:Folder, ayoType:string)
    local tbl = {};
    for _, instance in folder:GetChildren() do
       ValidateUnit(instance, ayoType);

@@ -1,4 +1,8 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
 local ServerStorage = game:GetService("ServerStorage");
+
+local Net = require(ReplicatedStorage.Utils.Net)
 local AyoFolder = ServerStorage.AyoFramework;
 -- local Types = require(ServerStorage.AyoFramework.Types);
 
@@ -52,5 +56,9 @@ local items = {
    Placeables = GetUnits(AyoFolder.Placeables, "Placeable");
    Interactables = GetUnits(AyoFolder.Interactables, "Interactable");
 };
+
+Net.ReceiveRequest("AvailableItems", function(...): ...any
+   return items;
+end);
 
 return items;

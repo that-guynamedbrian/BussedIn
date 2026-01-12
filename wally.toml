@@ -7,3 +7,4 @@ realm = "shared"
 [dependencies]
 React = "jsdotlua/react@17.2.1"
 ReactRoblox = "jsdotlua/react-roblox@17.2.1"
+ProfileStore = "2jammers/profilestore@0.1.0"

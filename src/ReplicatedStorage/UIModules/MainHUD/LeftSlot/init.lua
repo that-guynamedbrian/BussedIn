@@ -40,7 +40,7 @@ return function(props)
 
         ["NPC"] = ButtonIcon("rbxassetid://105665850741368"),
 
-        ["Inventory"] = ButtonIcon("rbxassetid://123467898068713",props.InventoryToggleState.enable),
+        ["Inventory"] = ButtonIcon("rbxassetid://123467898068713", props.InventoryToggleState.enable),
 
         ["Avatar"] = ButtonIcon("rbxassetid://104956935339886"),
 

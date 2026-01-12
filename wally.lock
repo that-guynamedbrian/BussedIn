@@ -3,9 +3,14 @@
 registry = "test"
 
 [[package]]
+name = "2jammers/profilestore"
+version = "0.1.0"
+dependencies = []
+
+[[package]]
 name = "dell/bussedin"
 version = "0.1.0"
-dependencies = [["React", "jsdotlua/react@17.2.1"], ["ReactRoblox", "jsdotlua/react-roblox@17.2.1"]]
+dependencies = [["ProfileStore", "2jammers/profilestore@0.1.0"], ["React", "jsdotlua/react@17.2.1"], ["ReactRoblox", "jsdotlua/react-roblox@17.2.1"]]
 
 [[package]]
 name = "jsdotlua/boolean"

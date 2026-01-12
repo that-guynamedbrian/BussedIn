@@ -21,7 +21,7 @@ local function ValidateUnit(instance:Instance, ayoType:string)
    assert(instance:IsA(className), `Root instance of '{ayoType}' must be '{className}' - error key: {ayoKey}`);
    assert(typeof(ayoKey) == "string", `Root instance of '{ayoType}' must contain valid [ayoKey] attribute - `)
    assert(usedAyoKeys[ayoKey] == nil, `{ayoType} with ayoKey '{ayoKey}' already exists, different {ayoType}s must have unique ayoKeys`);
-   assert(instance:GetAttribute("unitKey"), `Unit template must not contain`)
+   assert(instance:GetAttribute("unitKey") == nil, `Unit template must not contain unitKey`)
 
    if ayoType == "Tool" then
       local activateModule = instance:FindFirstChild("Activate");

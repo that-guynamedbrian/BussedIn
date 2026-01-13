@@ -22,7 +22,7 @@ local function HandleRemoteFired(...:any)
     assert(typeof(portId) == "string", "Invalid port id");
     local port = Ports[portId];
     if port then
-        port:Send(unpack(args));
+        port:Fire(unpack(args));
     else
         warn(`No receiver subscribed to port [{portId}]`);
     end
@@ -38,17 +38,17 @@ end
 
 
 
-function Net.Await(portId:string): ...any
+function Net.Wait(portId:string): ...any
     Ports[portId] = Ports[portId] or Signal.new();
-    return Ports[portId]:Await()
+    return Ports[portId]:Wait()
 end
 
-function Net.ReceiveAsync(portId:string, callback:(...any)->()): Signal.Receiver
+function Net.Connect(portId:string, callback:(...any)->()): Signal.Receiver
     Ports[portId] = Ports[portId] or Signal.new();
-    return Ports[portId]:Receive(callback);
+    return Ports[portId]:Connect(callback);
 end
 
-function Net.ReceiveRequest(portId:string, callback:(...any)->(...any)): ()
+function Net.HandleRequest(portId:string, callback:(...any)->(...any)): ()
     assert(typeof(callback) == "function", "Callback to connect must be a function");
     if Callbacks[portId] then
         warn(`Warning: Overwrote port [{portId}] callback`)

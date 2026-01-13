@@ -1,5 +1,4 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local VisibilityCheckDispatcher = game:GetService("VisibilityCheckDispatcher")
 
 local React = require(ReplicatedStorage.Packages.React)
 
@@ -8,10 +7,6 @@ local HotbarIcon = React.Component:extend("HotbarIcon")
 HotbarIcon.defaultProps = {
     Visible = true
 }
-
-function HotbarIcon:sh()
-    
-end
 
 function HotbarIcon:render()
     return React.createElement("ImageButton", {

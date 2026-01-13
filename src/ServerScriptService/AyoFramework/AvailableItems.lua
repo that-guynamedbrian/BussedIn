@@ -57,7 +57,7 @@ local items = {
    Interactables = GetUnits(AyoFolder.Interactables, "Interactable");
 };
 
-Net.ReceiveRequest("AvailableItems", function(...): ...any
+Net.HandleRequest("AvailableItems", function(...): ...any
    return items;
 end);
 

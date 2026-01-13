@@ -33,4 +33,22 @@ function ReactUtils.useToggleState(default:boolean): {
 	}
 end
 
+function ReactUtils.useEventConnection(
+	event: RBXScriptSignal,
+	callback: (...any) -> (),
+	dependencies: { any }
+)
+	local cachedCallback = React.useMemo(function()
+		return callback
+	end, dependencies)
+
+	React.useEffect(function()
+		local connection = event:Connect(cachedCallback)
+
+		return function()
+			connection:Disconnect()
+		end
+	end, { event, cachedCallback } :: {any})
+end
+
 return ReactUtils

@@ -12,7 +12,7 @@ type _Receiver = Receiver & {
 -- -- public
 export type Receiver = {
     Type: "Receiver";
-    Drop: (self:_Receiver)->();
+    Disconnect: (self:_Receiver)->();
 
     Catch: (self:_Receiver, errorhandler:(errorMessage:string, ...any)->())->(Receiver);
 };
@@ -26,12 +26,12 @@ type _Signal = Signal & {
 -- -- -- public
 export type Signal = {
     Type: "Signal";
-    Drop: (self:_Signal)->();
+    Destroy: (self:_Signal)->();
 
-    Send: (self:_Signal, ...any)->();
-    Receive: (self:_Signal, callback:(...any)->(...any))->(Receiver);
-    ReceiveOnce: (self:_Signal, callback:(...any)->(...any))->(Receiver);
-    Await: (self:_Receiver)->(...any);
+    Fire: (self:_Signal, ...any)->();
+    Connect: (self:_Signal, callback:(...any)->(...any))->(Receiver);
+    Once: (self:_Signal, callback:(...any)->(...any))->(Receiver);
+    Wait: (self:_Receiver)->(...any);
 };
 
 local Signal = {}::_Signal&{[any]:any};
@@ -57,7 +57,7 @@ function Receiver:Catch(errorhandler)
     return self;
 end;
 
-function Receiver:Drop()
+function Receiver:Disconnect()
     self._next._prev = self._prev;
     self._prev._next = self._next;
     table.clear(self);
@@ -65,7 +65,7 @@ end;
 
 -- -- Signal
 -- -- -- public
-function Signal:Send(...)
+function Signal:Fire(...)
     local receiver = self._next;
     while receiver ~= self do
         receiver:_call(...);
@@ -73,7 +73,7 @@ function Signal:Send(...)
     end
 end;
 
-function Signal:Receive(callback)
+function Signal:Connect(callback)
     assert(typeof(callback) == "function", "callback must be a function");
     local receiver = {
         Type = "Receiver";
@@ -86,28 +86,28 @@ function Signal:Receive(callback)
     return setmetatable(receiver, Receiver)::any
 end;
 
-function Signal:ReceiveOnce(callback)
+function Signal:Once(callback)
     assert(typeof(callback) == "function", "callback must be a function");
     local receiver;
     receiver = self:Receive(function(...)
         callback(...);
-        receiver:Drop();
+        receiver:Disconnect();
     end);
     return receiver;
 end;
 
-function Signal:Await()
+function Signal:Wait()
     local co = coroutine.running();
-    self:ReceiveOnce(function(...)
+    self:Once(function(...)
         coroutine.resume(co, ...);
     end);
     return coroutine.yield();
 end
 
-function Signal:Drop()
+function Signal:Destroy()
     local receiver = self._next;
     while receiver ~= self do
-        receiver:Drop();
+        receiver:Disconnect();
         receiver = self._next;
     end
     table.clear(self);

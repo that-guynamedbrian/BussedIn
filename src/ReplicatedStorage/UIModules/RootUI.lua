@@ -12,7 +12,7 @@ return function()
     print(GlobalUIContext)
     return React.createElement(React.Fragment, nil, {
         UIStroke = React.createElement("UIStroke"),
-        MainHUD = globals.HUDToggleState.on and React.createElement(MainHUD),
-        Inventory = globals.InventoryToggleState.on and React.createElement(Inventory)
+        MainHUD = globals.HUDToggleState and React.createElement(MainHUD),
+        Inventory = globals.InventoryToggleState and React.createElement(Inventory)
     })
 end

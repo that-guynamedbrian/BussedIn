@@ -19,12 +19,16 @@ local function ButtonIcon(imageid:string, activatedFunc:((any)->any)?)
 		ZIndex = 11,
 		BorderSizePixel = 0,
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-        [React.Event.MouseButton1Click] = activatedFunc
+        [React.Event.Activated] = activatedFunc
 	}, {})
 end
 
 return function()
     local globals = React.useContext(GlobalUIContext)
+    local enableInventory = React.useCallback(function()
+        print("a")
+        globals.InventoryToggleState = true
+    end, {globals.InventoryToggleState})
     positionIndex = -1
     return React.createElement("ImageLabel", {
         ScaleType = Enum.ScaleType.Fit,
@@ -42,7 +46,7 @@ return function()
 
         ["NPC"] = ButtonIcon("rbxassetid://105665850741368"),
 
-        ["Inventory"] = ButtonIcon("rbxassetid://123467898068713", globals.InventoryToggleState.enable),
+        ["Inventory"] = ButtonIcon("rbxassetid://123467898068713", enableInventory),
 
         ["Avatar"] = ButtonIcon("rbxassetid://104956935339886"),
 

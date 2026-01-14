@@ -3,12 +3,14 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local React = require(ReplicatedStorage.Packages.React)
 local ReactUtils = {}
 
-function ReactUtils.useToggleState(default:boolean): {
+export type toggleState = {
 	on: boolean,
 	enable: () -> (),
 	disable: () -> (),
 	toggle: () -> (),
 }
+
+function ReactUtils.useToggleState(default:boolean): toggleState
 	local toggled, setToggled = React.useState(default)
 
 	local enable = React.useCallback(function()
@@ -33,6 +35,7 @@ function ReactUtils.useToggleState(default:boolean): {
 	}
 end
 
+
 function ReactUtils.useEventConnection(
 	event: RBXScriptSignal,
 	callback: (...any) -> (),
@@ -50,5 +53,6 @@ function ReactUtils.useEventConnection(
 		end
 	end, { event, cachedCallback } :: {any})
 end
+
 
 return ReactUtils

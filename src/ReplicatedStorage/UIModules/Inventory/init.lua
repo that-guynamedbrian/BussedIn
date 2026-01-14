@@ -42,10 +42,8 @@ end
 
 return function(props)
 	local currentTab, setTab = React.useState("TOOLS")
-	local globals = React.useContext(GlobalUIContext)
-	local disableInventory = React.useCallback(function()
-		globals.InventoryToggleState = false;
-	end, {globals.InventoryToggleState})
+	local globals = React.useContext(GlobalUIContext.Context)
+	
 	return React.createElement("Frame", {
 		ZIndex = 2,
 		BackgroundTransparency = 1,
@@ -74,7 +72,7 @@ return function(props)
 				Position = UDim2.new(0.858796299, 0, 0.146666661, 0),
 				Size = UDim2.new(0.120370373, 0, 0.693333328, 0),
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-				[React.Event.Activated] = disableInventory
+				[React.Event.Activated] = globals.InventoryToggleState.disable
 			}, {}),
 
 			["InventoryText"] = React.createElement("TextLabel", {

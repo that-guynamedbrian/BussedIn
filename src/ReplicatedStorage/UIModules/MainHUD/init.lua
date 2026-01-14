@@ -11,7 +11,7 @@ return function(props)
 			Size = UDim2.fromScale(1,1),
 			Transparency = 1,
 		}, {
-			LeftButtonsFrame = React.createElement(LeftSlot,props),
+			LeftButtonsFrame = React.createElement(LeftSlot),
 			SlotFrame = React.createElement(Hotbar),
 			TopRightFrame = React.createElement(TopRight)
 		})

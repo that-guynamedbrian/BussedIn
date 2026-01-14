@@ -1,8 +1,10 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local React = require(ReplicatedStorage.Packages.React)
+local GlobalUIContext = require(ReplicatedStorage.UIModules.GlobalUIContext)
 
 return function()
+	local globals = React.useContext(GlobalUIContext);
     return React.createElement("Frame", {
 	BorderColor3 = Color3.fromRGB(0, 0, 0),
 	BackgroundTransparency = 1,

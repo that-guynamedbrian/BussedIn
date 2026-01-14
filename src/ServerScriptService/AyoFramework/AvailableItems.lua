@@ -52,13 +52,14 @@ local function GetUnits(folder:Folder, ayoType:string)
 end
 
 local items = {
-   Tools = GetUnits(AyoFolder.Tools, "Tool");
-   Placeables = GetUnits(AyoFolder.Placeables, "Placeable");
-   Interactables = GetUnits(AyoFolder.Interactables, "Interactable");
+   Tools = GetUnits(AyoFolder.Tools, "Tool") :: {[string]:Tool};
+   Placeables = GetUnits(AyoFolder.Placeables, "Placeable") :: {[string]:Model};
+   Interactables = GetUnits(AyoFolder.Interactables, "Interactable") :: {[string]:Model};
 };
 
 Net.HandleRequest("AvailableItems", function(...): ...any
    return items;
 end);
+
 
 return items;

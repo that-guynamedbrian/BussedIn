@@ -1,5 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local React = require(ReplicatedStorage.Packages.React)
+local GlobalUIContext = require(ReplicatedStorage.UIModules.GlobalUIContext)
 
 local positionIndex = -1
 local function nextposition()
@@ -22,7 +23,8 @@ local function ButtonIcon(imageid:string, activatedFunc:((any)->any)?)
 	}, {})
 end
 
-return function(props)
+return function()
+    local globals = React.useContext(GlobalUIContext)
     positionIndex = -1
     return React.createElement("ImageLabel", {
         ScaleType = Enum.ScaleType.Fit,
@@ -40,7 +42,7 @@ return function(props)
 
         ["NPC"] = ButtonIcon("rbxassetid://105665850741368"),
 
-        ["Inventory"] = ButtonIcon("rbxassetid://123467898068713", props.InventoryToggleState.enable),
+        ["Inventory"] = ButtonIcon("rbxassetid://123467898068713", globals.InventoryToggleState.enable),
 
         ["Avatar"] = ButtonIcon("rbxassetid://104956935339886"),
 

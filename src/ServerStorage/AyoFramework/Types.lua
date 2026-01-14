@@ -10,13 +10,17 @@ export type CharacterAyo = {
    Instance: Model;
    AyoType: "Character";
    InHand: ToolAyo|PlaceableAyo;
-   Inventory: { -- maps ayoKeys to array of {unitKey, unit} pairs with that ayoKey
-      [string]:{
+   Backpack: {
+      [string]:{  -- maps ayoKeys to array of {unitKey, unit} pairs with that ayoKey
          {
-            unitKey:string,
-            unit:ToolAyo|PlaceableAyo|InteractableAyo
+            unitKey: string,
+            unit: PickupableAyo
          }
-      }
+      };
+   };
+
+   Inventory: {
+      [string]: PickupableAyo
    };
 
    Pickup: (self:CharacterAyo, toPickup:PickupableAyo)->();

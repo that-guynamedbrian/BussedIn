@@ -1,6 +1,8 @@
 local Players = game:GetService("Players");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
+local ServerStorage = game:GetService("ServerStorage")
 
+local Types = require(ServerStorage.AyoFramework.Types)
 local ProfileStore = require(ReplicatedStorage.Packages.ProfileStore);
 
 local PLAYER_DATA_TEMPLATE = {
@@ -9,8 +11,9 @@ local PLAYER_DATA_TEMPLATE = {
 		Playtime = 0;
 		JoinTime = nil;
 	};
-	UnlockedItems = {};
-	CharactersMade = {};
+	PurchasedItems = {} :: {string};
+	UnlockedItems = {} :: {string};
+	CharactersMade = {} :: {[string]:Types.CharacterAyo};
 };
 
 local PlayerStore = ProfileStore.New("PlayerStore", PLAYER_DATA_TEMPLATE);

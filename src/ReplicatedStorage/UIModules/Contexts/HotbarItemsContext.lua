@@ -4,8 +4,6 @@ local React = require(ReplicatedStorage.Packages.React)
 
 local HotbarItemsContext = React.createContext({})
 
-export type HotBarItemsContext = React.Context<>
-
 local function HotbarItemsContextProvider(props)
     local items = {}
     for i = 1, 10 do

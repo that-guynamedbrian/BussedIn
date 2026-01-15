@@ -1,8 +1,6 @@
 local Players = game:GetService("Players")
-local ServerScriptService = game:GetService("ServerScriptService")
 local ServerStorage = game:GetService("ServerStorage")
 
-local AvailableItems = require(ServerScriptService.AyoFramework.AvailableItems)
 local Character = require(ServerStorage.AyoFramework.AyoTypes.Character)
 
 Players.PlayerAdded:Connect(function(player)

@@ -1,7 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local GlobalUIContext = require(script.Parent.GlobalUIContext)
 local React = require(ReplicatedStorage.Packages.React)
+local GlobalUIContext = require(ReplicatedStorage.UIModules.Contexts.GlobalUIContext)
 local Inventory = require(ReplicatedStorage.UIModules.Inventory)
 local MainHUD = require(ReplicatedStorage.UIModules.MainHUD)
 local ReactUtils = require(ReplicatedStorage.Utils.ReactUtils)

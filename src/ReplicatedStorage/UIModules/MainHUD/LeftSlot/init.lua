@@ -1,6 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local React = require(ReplicatedStorage.Packages.React)
-local GlobalUIContext = require(ReplicatedStorage.UIModules.GlobalUIContext)
+local GlobalUIContext = require(ReplicatedStorage.UIModules.Contexts.GlobalUIContext)
 
 local positionIndex = -1
 local function nextposition()

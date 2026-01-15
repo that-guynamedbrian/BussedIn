@@ -1,10 +1,9 @@
 --!strict
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-
-local GlobalUIContext = require(script.Parent.GlobalUIContext)
 local ToolsTab = require(script.ToolsTab)
 local React = require(ReplicatedStorage.Packages.React)
+local GlobalUIContext = require(ReplicatedStorage.UIModules.Contexts.GlobalUIContext)
 
 
 local function CategoryButton(props)

@@ -1,20 +1,15 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local React = require(ReplicatedStorage.Packages.React)
+local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
 
-local HotbarIcon = React.Component:extend("HotbarIcon")
-
-HotbarIcon.defaultProps = {
-    Visible = true
-}
-
-function HotbarIcon:render()
+return function(props)
+    local hotbarItemState: HotbarItemsContext.ContextValue = React.useContext(HotbarItemsContext.Context) 
     return React.createElement("ImageButton", {
         ScaleType = Enum.ScaleType.Fit,
         BorderColor3 = Color3.fromRGB(0, 0, 0),
         Image = "rbxassetid://117567947418404",
         BackgroundTransparency = 1,
-        Position = UDim2.new(0.000689181499, 0, -0.0406924374, 0),
         Size = UDim2.new(0.0946291313, 0, 1.07809818, 0),
         BorderSizePixel = 0,
         BackgroundColor3 = Color3.fromRGB(255, 255, 255),
@@ -36,10 +31,10 @@ function HotbarIcon:render()
             TextWrap = true,
         }, {}),
 
-        ["ImageLabel"] = React.createElement("ImageLabel", {
+        ["ImageLabel"] =  (hotbarItemState[props.index] ~= nil) and React.createElement("ImageLabel", {
             ScaleType = Enum.ScaleType.Fit,
             BorderColor3 = Color3.fromRGB(0, 0, 0),
-            Image = "rbxassetid://107412950382588",
+            Image = hotbarItemState[props.index].Item.Instance.TextureId,
             BackgroundTransparency = 1,
             Position = UDim2.new(0.130262032, 0, 0.272099227, 0),
             
@@ -49,5 +44,3 @@ function HotbarIcon:render()
         }, {}),
     })
 end
-
-return HotbarIcon

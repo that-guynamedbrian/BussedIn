@@ -3,7 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local React = require(ReplicatedStorage.Packages.React)
 local ReactUtils = require(ReplicatedStorage.Utils.ReactUtils)
 
-export type GlobalUIContext = {
+export type ContextValue = {
     HUDToggleState: ReactUtils.toggleState;
     InventoryToggleState: ReactUtils.toggleState;
 }
@@ -35,6 +35,6 @@ local function GlobalUIContextProvider(props)
 end
 
 return {
-    Context = GlobalUIContext :: GlobalUIContext;
+    Context = GlobalUIContext;
     Provider = GlobalUIContextProvider;
 }

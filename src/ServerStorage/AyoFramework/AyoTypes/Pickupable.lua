@@ -9,17 +9,29 @@ function Pickupable:Pickup(char:Types.CharacterAyo)
       unitKey = self.UnitKey;
       unit = self;
    });
+   char.Changed:Fire(char,"Backpack");
+end
+
+function Pickupable:Remove(char:Types.CharacterAyo)
+   for i, pair in char.Backpack[self.AyoKey] do
+      if pair.unitKey == self.UnitKey then
+         table.remove(char.Backpack[self.AyoKey],i)
+      end
+      pair.unit:Cleanup()
+   end
 end
 
 function Pickupable:Equip(char:Types.CharacterAyo)
    local inHand = char.InHand;
-   local hum = char.Instance:FindFirstChild("Humanoid");
+   local hum = char.Instance:FindFirstChildOfClass("Humanoid");
    if inHand then
-      inHand:Unequip(char);
+      inHand.HeldBy = nil;
+      hum:UnequipTools();
    end
    char.InHand = self;
    self.HeldBy = char;
    hum:EquipTool(self.Instance);
+   char.Changed:Fire(char,"InHand");
 end
 
 function Pickupable:Unequip()
@@ -31,6 +43,7 @@ function Pickupable:Unequip()
    char.Instance:FindFirstChildOfClass("Humanoid"):UnequipTools();
    char.InHand = nil;
    self.HeldBy = nil;
+   char.Changed:Fire(char,"InHand");
 end
 
 return Pickupable;

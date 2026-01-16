@@ -14,35 +14,19 @@ local Character = {
 } :: Types.CharacterAyo;
 Character.__index = Character;
 Character.__newindex = function(self:Types.CharacterAyo, index, value)
-    
-    local function confirmChange(index)
-        
-    end
-
-    local function onInnerChange(innertbl, index, value)
-        if typeof(value) == "table" then
-            setmetatable(value, {
-                __newindex = onInnerChange
-            })
-        end
-        rawset(innertbl, index, value)
-        self.Changed:Fire(innertbl)
-    end
-    
-    if typeof(value) == "table" then
-        setmetatable(value, {
-            __newindex = onInnerChange
-        })
-    end
     rawset(self, index, value)
     self.Changed:Fire(self[index]);
 end
 
-function Character:Pickup(toPickup:Types.PickupableAyo)
+function Character:AddToBackpack(toPickup:Types.PickupableAyo)
     toPickup:Pickup(self);
 end
 
-function Character:Equip(toEquip:Types.PickupableAyo)
+function Character:RemoveFromBackpack(toRemove:Types.PickupableAyo)
+    toRemove:Remove(self)
+end
+
+function Character:Equip(toEquip:Types.ToolAyo)
     local hum = self.Instance:FindFirstChildOfClass("Humanoid");
     hum:EquipTool(toEquip.Instance);
 end

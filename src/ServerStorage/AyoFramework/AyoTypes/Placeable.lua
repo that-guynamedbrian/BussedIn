@@ -12,21 +12,6 @@ local Placeable = {
 } :: Types.PlaceableAyo;
 Placeable.__index = Placeable;
 Placeable.__newindex = function(self:Types.CharacterAyo, index, value)
-    local function onInnerChange(innertbl, index, value)
-        if typeof(value) == "table" then
-            setmetatable(value, {
-                __newindex = onInnerChange
-            })
-        end
-        rawset(innertbl, index, value)
-        self.Changed:Fire(innertbl)
-    end
-    
-    if typeof(value) == "table" then
-        setmetatable(value, {
-            __newindex = onInnerChange
-        })
-    end
     rawset(self, index, value)
     self.Changed:Fire(self[index]);
 end

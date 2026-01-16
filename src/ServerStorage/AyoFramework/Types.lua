@@ -7,7 +7,8 @@ export type AyoUnit = {
    AyoType: string;
    AyoKey: string;
    UnitKey: string;
-   Changed: Signal.Signal;
+   Changed: Signal.Signal<CharacterAyo,string>;
+   Cleanup: (self:AyoUnit)->()
 };
 
 export type CharacterAyo = {
@@ -27,10 +28,15 @@ export type CharacterAyo = {
       [string]: PickupableAyo
    };
 
-   Pickup: (self:CharacterAyo, toPickup:PickupableAyo)->();
-   Equip: (self:CharacterAyo, toEquip:PickupableAyo)->();
+   AddToInventory: (self:CharacterAyo, toAdd:ToolAyo)->();
+   RemoveFromInventory: (self:CharacterAyo, toRemove:ToolAyo)->();
+
+   AddToBackpack: (self:CharacterAyo, toPickup:PickupableAyo)->();
+   RemoveFromBackpack: (self:CharacterAyo, toRemove:PickupableAyo)->();
+   RemoveFromBackpackBulk: (self:CharacterAyo, count:{[string]:number})->();  -- count: {[ayoKey]:number}
+
+   Equip: (self:CharacterAyo, toEquip:ToolAyo)->();
    Unequip: (self:CharacterAyo)->();
-   Remove: (self:CharacterAyo, count:{[string]:number})->(); -- count: {[ayoKey]:number}
    Activate: (self:CharacterAyo, toActivate:ToolAyo)->();
    Place: (self:CharacterAyo, toPlace:PlaceableAyo, location:CFrame)->();
    Interact: (self:CharacterAyo, toInteract:InteractableAyo)->();

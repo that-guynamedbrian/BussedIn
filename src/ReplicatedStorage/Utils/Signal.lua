@@ -1,41 +1,40 @@
-
 -- Types
 -- -- Receiver type
 -- -- -- private
-type _Receiver = Receiver & {
-    _next: _Receiver | _Signal;
-    _prev: _Receiver | _Signal;
+type _Receiver<args...> = Receiver<args...> & {
+    _next: _Receiver<args...> | _Signal<args...>;
+    _prev: _Receiver<args...> | _Signal<args...>;
     _func: (...any)->();
     _catch: (errorMessage:string, ...any)->();
-    _call: (self:_Receiver, ...any)->();
+    _call: (self:_Receiver<args...>, ...any)->();
 };
 -- -- public
-export type Receiver = {
+export type Receiver<args...> = {
     Type: "Receiver";
-    Disconnect: (self:_Receiver|any)->();
+    Disconnect: (self:_Receiver<args...>|any)->();
 
-    Catch: (self:_Receiver|any, errorhandler:(errorMessage:string, ...any)->())->(Receiver);
+    Catch: (self:_Receiver<args...>|any, errorhandler:(errorMessage:string, ...any)->())->(Receiver<args...>);
 };
 
 -- -- Signal type
 -- -- -- private
-type _Signal = Signal & {
-    _next: _Receiver | _Signal;
-    _prev: _Receiver | _Signal;
+type _Signal<args...> = Signal<args...> & {
+    _next: _Receiver<args...> | _Signal<args...>;
+    _prev: _Receiver<args...> | _Signal<args...>;
 };
 -- -- -- public
-export type Signal = {
+export type Signal<args...> = {
     Type: "Signal";
-    Destroy: (self:_Signal|any)->();
+    Destroy: (self:_Signal<args...>|any)->();
 
-    Fire: (self:_Signal|any, ...any)->();
-    Connect: (self:_Signal|any, callback:(...any)->(...any))->(Receiver);
-    Once: (self:_Signal|any, callback:(...any)->(...any))->(Receiver);
-    Wait: (self:_Receiver|any)->(...any);
+    Fire: (self:_Signal<args...>|any, ...any)->();
+    Connect: (self:_Signal<args...>|any, callback:(args...)->(...any))->(Receiver<args...>);
+    Once: (self:_Signal<args...>|any, callback:(args...)->(...any))->(Receiver<args...>);
+    Wait: (self:_Receiver<args...>|any)->(args...);
 };
 
-local Signal = {}::_Signal&{[any]:any};
-local Receiver = {}::_Receiver&{[any]:any};
+Signal = {}::_Signal<any>&{[any]:any};
+local Receiver = {}::_Receiver<any>&{[any]:any};
 Signal.__index = Signal;
 Receiver.__index = Receiver;
 
@@ -114,7 +113,7 @@ function Signal:Destroy()
 end
 
 -- Return Constructor
-function Signal.new(self, ...):Signal
+function Signal.new<args...>(self, ...):Signal<args...>
     self = {
         Type = "Signal";
     }::any;
@@ -123,4 +122,4 @@ function Signal.new(self, ...):Signal
     return setmetatable(self, Signal);
 end
 
-return Signal :: {new:()->Signal}
+return Signal :: {new:typeof(Signal.new)}

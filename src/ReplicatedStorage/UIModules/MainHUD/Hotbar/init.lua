@@ -2,7 +2,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local HotbarIcon = require(script.HotbarIcon)
 local React = require(ReplicatedStorage.Packages.React)
-local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
 
 
 return function(props)
@@ -44,9 +43,7 @@ return function(props)
                 Padding = UDim.new(0.00700000022, 0),
                 SortOrder = Enum.SortOrder.LayoutOrder,
             }, {}),
-            React.createElement(HotbarItemsContext.Provider, {
-                Items = {}
-            }, slots)
+            slots
         }),
 
         ["UIAspectRatioConstraint"] = React.createElement("UIAspectRatioConstraint", {

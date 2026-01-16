@@ -1,18 +1,37 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local React = require(ReplicatedStorage.Packages.React)
 
-local function createItemIcon(props)
+local React = require(ReplicatedStorage.Packages.React)
+local BackpackItemsContext = require(ReplicatedStorage.UIModules.Contexts.BackpackItemsContext)
+local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
+
+local function ItemIcon(props)
+	local hotbarItems:HotbarItemsContext.ContextValue = React.useContext(HotbarItemsContext.Context)
 	
+	local toggleHotbarItem = React.useCallback(function()
+		for _, tuple in hotbarItems do
+			if tuple.Item.AyoKey == props.tool.AyoKey then
+				tuple.ChangeItem(nil)
+				return
+			end
+		end
+		for _, tuple in hotbarItems do
+			if tuple.Item == nil then
+				tuple.ChangeItem(props.tool)
+				return
+			end
+		end
+	end, {hotbarItems, props.tool, props.ayoKey})
+
 	return React.createElement("ImageButton", {
 		ScaleType = Enum.ScaleType.Fit,
 
 		HoverImage = "rbxassetid://82913695333014",
 		Size = UDim2.new(0.156494528, 0, 0.113507375, 0),
 		BackgroundTransparency = 1,
-		Position = UDim2.new(0.0566875525, 0, -1.81398736e-08, 0),
-		Image = "rbxassetid://120763253309763",
+		Image = props.tool.TextureId,
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		[React.Event.Activated] = toggleHotbarItem
 	}, {
 		["ImageLabel"] = React.createElement("ImageLabel", {
 			ScaleType = Enum.ScaleType.Fit,
@@ -23,6 +42,7 @@ local function createItemIcon(props)
 			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		}, {}),
 
+		--[[
 		["ItemName"] = React.createElement("TextLabel", {
 			FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.ExtraBold, Enum.FontStyle.Normal),
 			TextSize = 14,
@@ -37,7 +57,7 @@ local function createItemIcon(props)
 			TextScaled = true,
 			TextWrap = true,
 		}, {}),
-
+		]]
 		--[[["Delete"] = React.createElement("ImageButton", {
 			ScaleType = Enum.ScaleType.Fit,
 	
@@ -129,6 +149,17 @@ local function createItemIcon(props)
 end
 
 local function createInnerTab(props)
+	local backpack = React.useContext(BackpackItemsContext.Context)
+	local icons = {}
+	
+	for ayoKey, tuple in backpack do
+		table.insert(icons, React.createElement(ItemIcon,{
+			ayoKey = ayoKey;
+			unitKey = tuple.unitKey;
+			tool = tuple.unit;
+		}))
+	end
+
 	return React.createElement("ScrollingFrame", {
 		Visible = props.Visible,
 		ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0),
@@ -138,10 +169,8 @@ local function createInnerTab(props)
 		Size = UDim2.new(1.06700003, 0, 0.838999987, 0),
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	},{
-		[1] = createItemIcon(props.categoryName),
-		[2] = createItemIcon(props.categoryName),
-		[3] = createItemIcon(props.categoryName),
-		[4] = createItemIcon(props.categoryName),
+		React.createElement(React.Fragment, nil, icons),
+
 		["UIGridLayout"] = React.createElement("UIGridLayout", {
 			SortOrder = Enum.SortOrder.LayoutOrder,
 			CellSize = UDim2.new(0.319999993, 0, 0.100000001, 0),

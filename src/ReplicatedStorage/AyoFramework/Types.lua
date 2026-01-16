@@ -7,7 +7,7 @@ export type AyoUnit = {
    AyoType: string;
    AyoKey: string;
    UnitKey: string;
-   Changed: Signal.Signal<CharacterAyo,string>;
+   Changed: Signal.Signal;
    Cleanup: (self:AyoUnit)->()
 };
 
@@ -24,7 +24,7 @@ export type CharacterAyo = {
       };
    };
 
-   Inventory: {
+   Inventory: { -- maps UnitKey to unit
       [string]: PickupableAyo
    };
 

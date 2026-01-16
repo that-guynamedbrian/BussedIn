@@ -104,7 +104,7 @@ function Signal.New<T...>(): Signal<T...>
 	}
 	setmetatable(self, Signal)
 
-	return self
+	return self::any
 
 end
 

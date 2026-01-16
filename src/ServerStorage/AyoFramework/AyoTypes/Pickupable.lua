@@ -1,5 +1,7 @@
-local ServerStorage = game:GetService("ServerStorage");
-local Types = require(ServerStorage.AyoFramework.Types);
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Types = require(ReplicatedStorage.AyoFramework.Types)
+
 
 local Pickupable = {}::Types.PickupableAyo;
 
@@ -16,8 +18,9 @@ function Pickupable:Remove(char:Types.CharacterAyo)
    for i, pair in char.Backpack[self.AyoKey] do
       if pair.unitKey == self.UnitKey then
          table.remove(char.Backpack[self.AyoKey],i)
+         pair.unit:Cleanup()
+         char.Changed.Fire(char,"Backpack")
       end
-      pair.unit:Cleanup()
    end
 end
 

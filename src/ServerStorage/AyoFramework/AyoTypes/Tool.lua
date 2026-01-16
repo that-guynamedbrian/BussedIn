@@ -1,15 +1,17 @@
 local HttpService = game:GetService("HttpService");
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService");
-local ServerStorage = game:GetService("ServerStorage")
 
+local Types = require(ReplicatedStorage.AyoFramework.Types)
 local Pickupable = require(script.Parent.Pickupable);
 local AvailableItems = require(ServerScriptService.AyoFramework.AvailableItems);
-local Types = require(ServerStorage.AyoFramework.Types)
 
 local Tool = {
    AyoType = "Tool";
    Equip = Pickupable.Equip;
    Unequip = Pickupable.Unequip;
+   Pickup = Pickupable.Pickup;
+   Remove = Pickupable.Remove;
 };
 Tool.__index = Tool;
 Tool.__newindex = function(self:Types.CharacterAyo, index, value)

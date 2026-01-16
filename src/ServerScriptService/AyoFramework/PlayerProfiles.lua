@@ -1,8 +1,8 @@
 local Players = game:GetService("Players");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
-local ServerStorage = game:GetService("ServerStorage")
 
-local Types = require(ServerStorage.AyoFramework.Types)
+
+local Types = require(ReplicatedStorage.AyoFramework.Types)
 local ProfileStore = require(ReplicatedStorage.Packages.ProfileStore);
 
 local PLAYER_DATA_TEMPLATE = {

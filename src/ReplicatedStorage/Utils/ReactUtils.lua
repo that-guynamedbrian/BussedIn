@@ -54,5 +54,20 @@ function ReactUtils.useEventConnection(
 	end, { event, cachedCallback } :: {any})
 end
 
+function ReactUtils.chainElements(
+	elements: { 
+		typeof({
+			function(props:{any}) return React.createElement(nil) end,
+			{}::{[string]:any}
+		})
+	},
+	i:number?
+)
+	local index = i or 1;
+	local tuple = elements[index];
+	if tuple == nil then return; end
+	return React.createElement(unpack(tuple), {ReactUtils.chainElements(elements, index+1)});
+end
+
 
 return ReactUtils

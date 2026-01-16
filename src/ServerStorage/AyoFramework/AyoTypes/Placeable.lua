@@ -1,8 +1,8 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
-local ServerStorage = game:GetService("ServerStorage")
 
+local Types = require(ReplicatedStorage.AyoFramework.Types)
 local AvailableItems = require(ServerScriptService.AyoFramework.AvailableItems)
-local Types = require(ServerStorage.AyoFramework.Types)
 local Pickupable = require(script.Parent.Pickupable)
 
 local Placeable = {

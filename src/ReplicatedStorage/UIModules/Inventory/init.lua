@@ -3,8 +3,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local ToolsTab = require(script.ToolsTab)
 local React = require(ReplicatedStorage.Packages.React)
+local BackpackItemsContext = require(ReplicatedStorage.UIModules.Contexts.BackpackItemsContext)
 local GlobalUIContext = require(ReplicatedStorage.UIModules.Contexts.GlobalUIContext)
-
+local Net = require(ReplicatedStorage.Utils.Net)
 
 local function CategoryButton(props)
 	local onClick = React.useCallback(function()
@@ -22,6 +23,7 @@ local function CategoryButton(props)
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		[React.Event.Activated] = onClick
 	}, {
+		--[[
 		["TextLabel"] = React.createElement("TextLabel", {
 			FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.Heavy, Enum.FontStyle.Normal),
 			TextSize = 14,
@@ -35,12 +37,64 @@ local function CategoryButton(props)
 			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 			TextScaled = true,
 			TextWrap = true,
-		}, {}),
+		}, {}),]]
 	})
 end
 
-return function(props)
+local function InventoryTab(props)
 	local currentTab, setTab = React.useState("TOOLS")
+	return React.createElement(BackpackItemsContext.Context,{
+		value = Net.Request(300, "AvailableItems");
+		children = React.createElement("Frame", {
+
+			BackgroundTransparency = 1,
+			Position = UDim2.new(0.0299999993, 0, 0.0565862693, 0),
+			Size = UDim2.new(0.347916663, 0, 0.92949909, 0),
+			ZIndex = 2,
+			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		}, {
+			["ToolsCategory"] = React.createElement(CategoryButton,{
+				categoryName = "TOOLS",
+				position = UDim2.fromScale(-0.052, 0.041),
+				setTab = setTab
+			}),
+
+			["PlaceablesCategory"] = React.createElement(CategoryButton,{
+				categoryName = "PLACEABLES",
+				position = UDim2.fromScale(0.493, 0.041),
+				setTab = setTab
+			}),
+
+			--[[["PlaceablesInnerTabs"] = React.createElement(nil,{
+				categoryName = "Placeable",
+				Visible = currentTab == "PLACEABLES"
+			}),]]
+
+			["ToolsInnerTabs"] = React.createElement(ToolsTab,{
+				Visible = currentTab == "TOOLS"
+			}),
+
+			["UIAspectRatioConstraint"] = React.createElement("UIAspectRatioConstraint", {
+				AspectRatio = 0.6599999666213989,
+			}, {}),
+
+			["InventoryTabBackground"] = React.createElement("ImageLabel", {
+				ScaleType = Enum.ScaleType.Fit,
+				ZIndex = 0,
+				Transparency = 1,
+				Image = "rbxassetid://76171404033584",
+				BackgroundTransparency = 1,
+				Position = UDim2.new(-0.0913173482, 0, -0.00514681078, 0),
+				Size = UDim2.new(1.15495908, 0, 1.02810085, 0),
+				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+			}, {}),
+		})
+	})
+end
+
+
+
+return function(props)
 	local globals = React.useContext(GlobalUIContext.Context)
 	
 	return React.createElement("Frame", {
@@ -73,7 +127,7 @@ return function(props)
 				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 				[React.Event.Activated] = globals.InventoryToggleState.disable
 			}, {}),
-
+			--[[
 			["InventoryText"] = React.createElement("TextLabel", {
 				FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.Heavy, Enum.FontStyle.Normal),
 				TextSize = 14,
@@ -88,57 +142,13 @@ return function(props)
 				TextScaled = true,
 				TextWrap = true,
 			}, {}),
-
+			]]
 			["UIAspectRatioConstraint"] = React.createElement("UIAspectRatioConstraint", {
 				AspectRatio = 5.710000038146973,
 			}, {}),
 		}),
 
-		["InventoryTab"] = React.createElement("Frame", {
-
-			BackgroundTransparency = 1,
-			Position = UDim2.new(0.0299999993, 0, 0.0565862693, 0),
-			Size = UDim2.new(0.347916663, 0, 0.92949909, 0),
-			ZIndex = 2,
-			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-		}, {
-			["ToolsCategory"] = React.createElement(CategoryButton,{
-				categoryName = "TOOLS",
-				position = UDim2.fromScale(-0.052, 0.041),
-				setTab = setTab
-			}),
-
-			["PlaceablesCategory"] = React.createElement(CategoryButton,{
-				categoryName = "PLACEABLES",
-				position = UDim2.fromScale(0.493, 0.041),
-				setTab = setTab
-			}),
-
-			--[[["PlaceablesInnerTabs"] = React.createElement(nil,{
-				categoryName = "Placeable",
-				Visible = currentTab == "PLACEABLES"
-			}),]]
-
-			["ToolsInnerTabs"] = React.createElement(ToolsTab,{
-				categoryName = "Tool",
-				Visible = currentTab == "TOOLS"
-			}),
-
-			["UIAspectRatioConstraint"] = React.createElement("UIAspectRatioConstraint", {
-				AspectRatio = 0.6599999666213989,
-			}, {}),
-
-			["InventoryTabBackground"] = React.createElement("ImageLabel", {
-				ScaleType = Enum.ScaleType.Fit,
-				ZIndex = 0,
-				Transparency = 1,
-				Image = "rbxassetid://76171404033584",
-				BackgroundTransparency = 1,
-				Position = UDim2.new(-0.0913173482, 0, -0.00514681078, 0),
-				Size = UDim2.new(1.15495908, 0, 1.02810085, 0),
-				BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-			}, {}),
-		}),
+		["InventoryTab"] = React.createElement(InventoryTab),
 
 		["BlackTransparentScreen"] = React.createElement("Frame", {
 			ZIndex = 1,

@@ -1,7 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local ServerStorage = game:GetService("ServerStorage")
 
-local Types = require(ServerStorage.AyoFramework.Types)
+
+local Types = require(ReplicatedStorage.AyoFramework.Types)
 local React = require(ReplicatedStorage.Packages.React)
 
 export type ContextValue = {
@@ -15,8 +15,9 @@ local HotbarItemsContext = React.createContext({})
 
 local function HotbarItemsContextProvider(props)
     local items = {}
+    print(props.value)
     for i = 1, 10 do
-        local hotbarItemState = {React.useState(props.Items[i] or nil)};
+        local hotbarItemState = {React.useState(props.value.Items[i] or nil)};
         if hotbarItemState[1] == nil then continue; end
         items[i] = {
             Item = hotbarItemState[1];

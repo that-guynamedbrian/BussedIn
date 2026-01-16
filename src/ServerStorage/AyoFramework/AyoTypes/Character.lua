@@ -1,6 +1,8 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local ServerStorage = game:GetService("ServerStorage")
 
+local Signal = require(ReplicatedStorage.Utils.Signal)
 local Placeable = require(script.Parent.Placeable)
 local Tool = require(script.Parent.Tool)
 local AvailableItems = require(ServerScriptService.AyoFramework.AvailableItems)
@@ -11,6 +13,30 @@ local Character = {
     AyoType = "Character";
 } :: Types.CharacterAyo;
 Character.__index = Character;
+Character.__newindex = function(self:Types.CharacterAyo, index, value)
+    
+    local function confirmChange(index)
+        
+    end
+
+    local function onInnerChange(innertbl, index, value)
+        if typeof(value) == "table" then
+            setmetatable(value, {
+                __newindex = onInnerChange
+            })
+        end
+        rawset(innertbl, index, value)
+        self.Changed:Fire(innertbl)
+    end
+    
+    if typeof(value) == "table" then
+        setmetatable(value, {
+            __newindex = onInnerChange
+        })
+    end
+    rawset(self, index, value)
+    self.Changed:Fire(self[index]);
+end
 
 function Character:Pickup(toPickup:Types.PickupableAyo)
     toPickup:Pickup(self);
@@ -48,6 +74,7 @@ function Character.new(instance:Model)
     local self = {
         Instance = instance;
         Inventory = inventory;
+        Changed = Signal.new();
     };
 
     return setmetatable(self, Character);

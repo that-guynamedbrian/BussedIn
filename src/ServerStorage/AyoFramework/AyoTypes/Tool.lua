@@ -11,6 +11,26 @@ local Tool = {
    Equip = Pickupable.Equip;
    Unequip = Pickupable.Unequip;
 };
+Tool.__index = Tool;
+Tool.__newindex = function(self:Types.CharacterAyo, index, value)
+    local function onInnerChange(innertbl, index, value)
+        if typeof(value) == "table" then
+            setmetatable(value, {
+                __newindex = onInnerChange
+            })
+        end
+        rawset(innertbl, index, value)
+        self.Changed:Fire(innertbl)
+    end
+    
+    if typeof(value) == "table" then
+        setmetatable(value, {
+            __newindex = onInnerChange
+        })
+    end
+    rawset(self, index, value)
+    self.Changed:Fire(self[index]);
+end
 
 function Tool.new(ayoKey:string)
    assert(typeof(ayoKey) == "string", "Invalid parameter 'ayoKey', must be of type string");

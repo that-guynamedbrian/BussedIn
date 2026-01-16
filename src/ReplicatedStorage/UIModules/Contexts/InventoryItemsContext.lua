@@ -7,6 +7,7 @@ local React = require(ReplicatedStorage.Packages.React)
 export type ContextValue = {
     AddItem: (ayoKey:string)->();
     RemoveItem: (ayoKey:string)->();
+    Items: {[string]:}
 };
 
 local InventoryItemsContext = React.createContext({})

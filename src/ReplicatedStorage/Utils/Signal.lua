@@ -12,9 +12,9 @@ type _Receiver = Receiver & {
 -- -- public
 export type Receiver = {
     Type: "Receiver";
-    Disconnect: (self:_Receiver)->();
+    Disconnect: (self:_Receiver|any)->();
 
-    Catch: (self:_Receiver, errorhandler:(errorMessage:string, ...any)->())->(Receiver);
+    Catch: (self:_Receiver|any, errorhandler:(errorMessage:string, ...any)->())->(Receiver);
 };
 
 -- -- Signal type
@@ -26,12 +26,12 @@ type _Signal = Signal & {
 -- -- -- public
 export type Signal = {
     Type: "Signal";
-    Destroy: (self:_Signal)->();
+    Destroy: (self:_Signal|any)->();
 
-    Fire: (self:_Signal, ...any)->();
-    Connect: (self:_Signal, callback:(...any)->(...any))->(Receiver);
-    Once: (self:_Signal, callback:(...any)->(...any))->(Receiver);
-    Wait: (self:_Receiver)->(...any);
+    Fire: (self:_Signal|any, ...any)->();
+    Connect: (self:_Signal|any, callback:(...any)->(...any))->(Receiver);
+    Once: (self:_Signal|any, callback:(...any)->(...any))->(Receiver);
+    Wait: (self:_Receiver|any)->(...any);
 };
 
 local Signal = {}::_Signal&{[any]:any};

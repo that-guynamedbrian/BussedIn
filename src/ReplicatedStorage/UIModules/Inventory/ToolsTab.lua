@@ -6,23 +6,25 @@ local BackpackItemsContext = require(ReplicatedStorage.UIModules.Contexts.Backpa
 local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
 
 local function ItemIcon(props)
-	local hotbarItems:HotbarItemsContext.ContextValue = React.useContext(HotbarItemsContext.Context)
+	local hotbarItems = React.useContext(HotbarItemsContext.Context)
 	
 	local toggleHotbarItem = React.useCallback(function()
+		print(props.instance:GetAttribute("name"))
 		for _, tuple in hotbarItems do
-			if tuple.Item.AyoKey == props.tool.AyoKey then
+			if tuple.Item ~= nil and tuple.Item:GetAttribute("ayoKey") == props.instance:GetAttribute("ayoKey") then
+				print("Changed to"..tuple.Item:GetAttribute("name"))
 				tuple.ChangeItem(nil)
 				return
 			end
 		end
 		for _, tuple in hotbarItems do
 			if tuple.Item == nil then
-				tuple.ChangeItem(props.tool)
+				tuple.ChangeItem(props.instance)
 				return
 			end
 		end
-	end, {hotbarItems, props.tool, props.ayoKey})
-	print(props.tool)
+	end, {hotbarItems, props.instance})
+
 	return React.createElement("ImageButton", {
 		ScaleType = Enum.ScaleType.Fit,
 
@@ -45,7 +47,7 @@ local function ItemIcon(props)
 		
 		["ItemName"] = React.createElement("TextLabel", {
 			FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.ExtraBold, Enum.FontStyle.Normal),
-			TextSize = 14,
+			TextSize = 30,
 			Size = UDim2.new(0.378614932, 0, 0.162858352, 0),
 			TextColor3 = Color3.fromRGB(0, 91, 175),
 			Text = props.instance:GetAttribute("name"),
@@ -152,11 +154,12 @@ local function createInnerTab(props)
 	local backpack = React.useContext(BackpackItemsContext.Context)
 	local icons = {}
 
-	for ayoKey, items in backpack:GetChildren() do
-		if items[1] and items[1]:GetAttribute("ayoType") == "Tool" then
+	for ayoKey, items in backpack do
+		local tool = items:GetChildren()[1]
+		if tool and tool:GetAttribute("ayoType") == "Tool" then
 			table.insert(icons, React.createElement(ItemIcon,{
 				ayoKey = ayoKey;
-				instance = items[1];
+				instance = tool;
 			}))
 		end
 	end

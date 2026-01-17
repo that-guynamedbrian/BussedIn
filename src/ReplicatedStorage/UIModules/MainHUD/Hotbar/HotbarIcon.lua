@@ -4,7 +4,11 @@ local React = require(ReplicatedStorage.Packages.React)
 local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
 
 return function(props)
-    local hotbarItemState: HotbarItemsContext.ContextValue = React.useContext(HotbarItemsContext.Context) 
+    local hotbarItemState = React.useContext(HotbarItemsContext.Context)
+    print(hotbarItemState[props.index])
+    local activatedFunc = React.useCallback(function()
+
+    end, {})
     return React.createElement("ImageButton", {
         ScaleType = Enum.ScaleType.Fit,
         BorderColor3 = Color3.fromRGB(0, 0, 0),
@@ -13,6 +17,7 @@ return function(props)
         Size = UDim2.new(0.0946291313, 0, 1.07809818, 0),
         BorderSizePixel = 0,
         BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        [React.Event.Activated] = activatedFunc
     }, {
         
         ["TextLabel"] = React.createElement("TextLabel", {
@@ -33,10 +38,10 @@ return function(props)
         }, {}),
         
 
-        ["ImageLabel"] =  (hotbarItemState[props.index] ~= nil) and React.createElement("ImageLabel", {
+        ["ImageLabel"] = (hotbarItemState[props.index].Item ~= nil) and React.createElement("ImageLabel", {
             ScaleType = Enum.ScaleType.Fit,
             BorderColor3 = Color3.fromRGB(0, 0, 0),
-            Image = hotbarItemState[props.index].Item.Instance.TextureId,
+            Image = hotbarItemState[props.index].Item.TextureId,
             BackgroundTransparency = 1,
             Position = UDim2.new(0.130262032, 0, 0.272099227, 0),
             

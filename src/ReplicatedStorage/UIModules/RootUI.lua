@@ -28,10 +28,10 @@ return function(props)
             CharReplica = props.backpackReplica;
         };
         children = React.createElement(BackpackItemsContext.Provider, {
-            value = props.backpackReplica.Backpack;
+            value = props.backpackReplica;
             children = React.createElement(HotbarItemsContext.Provider, {
                 value = {
-                    Items = {}
+                    Items = {};
                 };
                 children = React.createElement(MainUIs);
             });

@@ -43,7 +43,8 @@ return function(props)
                 Padding = UDim.new(0.00700000022, 0),
                 SortOrder = Enum.SortOrder.LayoutOrder,
             }, {}),
-            slots
+            
+            React.createElement(React.Fragment,nil, slots)
         }),
 
         ["UIAspectRatioConstraint"] = React.createElement("UIAspectRatioConstraint", {

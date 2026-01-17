@@ -79,7 +79,7 @@ function Character.new(instance:Model)
         UnitKey = unitKey;
         Instance = instance;
         Backpack = backpack;
-        Inventory = {};
+        Inventory = inventory;
         Changed = Signal.new();
     };
 

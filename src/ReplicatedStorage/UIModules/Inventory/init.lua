@@ -3,9 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local ToolsTab = require(script.ToolsTab)
 local React = require(ReplicatedStorage.Packages.React)
-local BackpackItemsContext = require(ReplicatedStorage.UIModules.Contexts.BackpackItemsContext)
 local GlobalUIContext = require(ReplicatedStorage.UIModules.Contexts.GlobalUIContext)
-local Net = require(ReplicatedStorage.Utils.Net)
 
 local function CategoryButton(props)
 	local onClick = React.useCallback(function()

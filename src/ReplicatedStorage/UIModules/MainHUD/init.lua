@@ -12,7 +12,7 @@ return function(props)
 			Transparency = 1,
 		}, {
 			LeftButtonsFrame = React.createElement(LeftSlot),
-			--SlotFrame = React.createElement(Hotbar),
+			SlotFrame = React.createElement(Hotbar),
 			TopRightFrame = React.createElement(TopRight)
 		})
 	end

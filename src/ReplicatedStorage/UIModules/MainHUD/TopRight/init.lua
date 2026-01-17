@@ -10,7 +10,7 @@ return function()
 	Size = UDim2.new(0.0713541657, 0, 0.644712448, 0),
 	BorderSizePixel = 0,
 	BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-}--[[ ,{
+}, {
 	["Time&Weather"] = React.createElement("Frame", {
 		BorderColor3 = Color3.fromRGB(0, 0, 0),
 		BackgroundTransparency = 1,
@@ -152,5 +152,5 @@ return function()
 			AspectRatio = 3.140000104904175,
 		}, {}),
 	}),
-}]])
+})
 end

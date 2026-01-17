@@ -10,9 +10,8 @@ local Tool = require(ServerStorage.AyoFramework.AyoTypes.Tool)
 Players.PlayerAdded:Connect(function(player)
     local characterInstance = player.Character or player.CharacterAdded:Wait();
     local char = Character.new(characterInstance);
-    for ayoKey, tool in AvailableItems.Tools do
-        char:AddToBackpack(Tool.new(ayoKey))
-    end
+    
+    print(char.Backpack)
     local charReplica = ReplicaServer.New({
         Token = ReplicaServer.Token("LocalCharacterAyo");
         Data = char.Backpack;

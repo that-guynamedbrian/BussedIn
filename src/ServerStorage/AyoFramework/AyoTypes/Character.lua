@@ -1,3 +1,4 @@
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
@@ -6,7 +7,7 @@ local Signal = require(ReplicatedStorage.Utils.Signal)
 local Placeable = require(script.Parent.Placeable)
 local Tool = require(script.Parent.Tool)
 local AvailableItems = require(ServerScriptService.AyoFramework.AvailableItems)
-
+local backpackFolder = ReplicatedStorage.AyoFramework.BackpackFolder
 
 local Character = {
     AyoType = "Character";
@@ -36,24 +37,33 @@ function Character:Unequip()
 end;
 
 function Character.new(instance:Model)
-    
+    local localfolder = Instance.new("Folder")
+    localfolder.Parent = backpackFolder
+    localfolder.Name = instance.Name
+
     local backpack = {}
     for ayoKey, template in AvailableItems.Tools do
         if template:GetAttribute("earnedItem") or template:GetAttribute("purchaseAmount") then
             continue;
-        end
-        local newtool = Tool.new(ayoKey);
-        backpack[newtool.UnitKey] = newtool;
+        end;
+        local newtemplate = template:Clone()
+        newtemplate.Parent = localfolder
+        backpack[ayoKey] = {
+            instance = newtemplate
+        }
     end
     
     for ayoKey, template in AvailableItems.Placeables do
         if template:GetAttribute("earnedItem") or template:GetAttribute("purchaseAmount") then
             continue;
         end
-        local newplaceable = Placeable.new(ayoKey);
-        backpack[newplaceable.UnitKey] = newplaceable;
+        local newtemplate = template:Clone()
+        newtemplate.Parent = localfolder
+        backpack[ayoKey] = {
+            instance = newtemplate
+        }
     end
-
+    
     local self = {
         Instance = instance;
         Backpack = backpack;

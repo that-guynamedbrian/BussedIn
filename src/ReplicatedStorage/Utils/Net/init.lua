@@ -28,9 +28,14 @@ local function HandleRemoteFired(...:any)
     end
 end
 
-local function HandleInvocation(portId:string, ...:any)
-    if Callbacks[portId] then
-        return Callbacks[portId](...);
+local function HandleInvocation(...:any)
+	local args = {...};
+	local portId = if RunService:IsClient() then table.remove(args,1) else table.remove(args,2);
+	
+	assert(typeof(portId) == "string", "Invalid port id");
+	local callback = Callbacks[portId];
+	if callback then
+        return callback(...);
     end
     return warn(`No callback subscribed to port [{portId}]`)
 end

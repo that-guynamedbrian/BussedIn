@@ -22,27 +22,27 @@ local function ItemIcon(props)
 			end
 		end
 	end, {hotbarItems, props.tool, props.ayoKey})
-
+	print(props.tool)
 	return React.createElement("ImageButton", {
 		ScaleType = Enum.ScaleType.Fit,
 
 		HoverImage = "rbxassetid://82913695333014",
 		Size = UDim2.new(0.156494528, 0, 0.113507375, 0),
 		BackgroundTransparency = 1,
-		Image = props.tool.TextureId,
+		Image = "rbxassetid://120763253309763",
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		[React.Event.Activated] = toggleHotbarItem
 	}, {
 		["ImageLabel"] = React.createElement("ImageLabel", {
 			ScaleType = Enum.ScaleType.Fit,
-			Image = "rbxassetid://140624922048936",
+			Image = props.tool.Instance.TextureId,
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.227649018, 0, 0.192578718, 0),
 			Size = UDim2.new(0.527449369, 0, 0.493510336, 0),
 			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		}, {}),
 
-		--[[
+		
 		["ItemName"] = React.createElement("TextLabel", {
 			FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.ExtraBold, Enum.FontStyle.Normal),
 			TextSize = 14,
@@ -57,7 +57,7 @@ local function ItemIcon(props)
 			TextScaled = true,
 			TextWrap = true,
 		}, {}),
-		]]
+		
 		--[[["Delete"] = React.createElement("ImageButton", {
 			ScaleType = Enum.ScaleType.Fit,
 	
@@ -151,13 +151,15 @@ end
 local function createInnerTab(props)
 	local backpack = React.useContext(BackpackItemsContext.Context)
 	local icons = {}
-	
-	for ayoKey, tuple in backpack do
-		table.insert(icons, React.createElement(ItemIcon,{
-			ayoKey = ayoKey;
-			unitKey = tuple.unitKey;
-			tool = tuple.unit;
-		}))
+
+	for ayoKey, items in backpack do
+		if items[1] then
+			table.insert(icons, React.createElement(ItemIcon,{
+				ayoKey = ayoKey;
+				unitKey = items[1].unitKey;
+				tool = items[1].unit;
+			}))
+		end
 	end
 
 	return React.createElement("ScrollingFrame", {

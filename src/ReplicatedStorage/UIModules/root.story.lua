@@ -7,10 +7,12 @@ local ReplicaClient = require(ReplicatedStorage.ReplicaClient)
 
 local co = coroutine.running()
 ReplicaClient.OnNew("LocalCharacterAyo", function(replica: ReplicaClient.Replica)
+    print(replica)
     coroutine.resume(co, replica)
 end)
 ReplicaClient.RequestData()
-local backpackReplica = coroutine.yield()
+local backpackReplica:ReplicaClient.Replica = coroutine.yield()
+print(backpackReplica)
 
 local story = {
     react = React;

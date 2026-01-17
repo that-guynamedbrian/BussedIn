@@ -14,7 +14,7 @@ return function(props)
         BorderSizePixel = 0,
         BackgroundColor3 = Color3.fromRGB(255, 255, 255),
     }, {
-        --[[
+        
         ["TextLabel"] = React.createElement("TextLabel", {
             FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
             TextSize = 14,
@@ -31,7 +31,7 @@ return function(props)
             TextScaled = true,
             TextWrap = true,
         }, {}),
-        ]]
+        
 
         ["ImageLabel"] =  (hotbarItemState[props.index] ~= nil) and React.createElement("ImageLabel", {
             ScaleType = Enum.ScaleType.Fit,

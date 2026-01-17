@@ -1,13 +1,14 @@
-
+local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
+local backpackFolder = ReplicatedStorage.AyoFramework.BackpackFolder
+local inventoryFolder = ReplicatedStorage.AyoFramework.InventoryFolder
 
-local Types = require(ReplicatedStorage.AyoFramework.Types)
-local Signal = require(ReplicatedStorage.Utils.Signal)
 local Placeable = require(script.Parent.Placeable)
 local Tool = require(script.Parent.Tool)
+local Types = require(ReplicatedStorage.AyoFramework.Types)
+local Signal = require(ReplicatedStorage.Utils.Signal)
 local AvailableItems = require(ServerScriptService.AyoFramework.AvailableItems)
-local backpackFolder = ReplicatedStorage.AyoFramework.BackpackFolder
 
 local Character = {
     AyoType = "Character";
@@ -23,7 +24,7 @@ function Character:AddToBackpack(toPickup:Types.PickupableAyo)
 end
 
 function Character:RemoveFromBackpack(toRemove:Types.PickupableAyo)
-    toRemove:Remove(self)
+    toRemove:Remove(self);
 end
 
 function Character:Equip(toEquip:Types.ToolAyo)
@@ -37,39 +38,53 @@ function Character:Unequip()
 end;
 
 function Character.new(instance:Model)
-    local localfolder = Instance.new("Folder")
-    localfolder.Parent = backpackFolder
-    localfolder.Name = instance.Name
+    local unitKey = HttpService:GenerateGUID(false)
+    local backpack = Instance.new("Folder")
+    backpack.Name = unitKey
+    backpack.Parent = backpackFolder
+    local inventory = Instance.new("Folder")
+    inventory.Name = unitKey
+    inventory.Parent = inventoryFolder
 
-    local backpack = {}
     for ayoKey, template in AvailableItems.Tools do
+        local subfolder = Instance.new("Folder")
+        subfolder.Name = ayoKey
+        subfolder.Parent = backpack
         if template:GetAttribute("earnedItem") or template:GetAttribute("purchaseAmount") then
             continue;
         end;
-        local newtemplate = template:Clone()
-        newtemplate.Parent = localfolder
-        backpack[ayoKey] = {
-            instance = newtemplate
-        }
+        for i = 1, template:GetAttribute("count") or 1 do
+            local newtool = Tool.new(ayoKey);
+            newtool.Instance.Parent = subfolder;
+            newtool.Instance.Name = newtool.UnitKey;
+        end
     end
     
     for ayoKey, template in AvailableItems.Placeables do
+        local subfolder = Instance.new("Folder")
+        subfolder.Name = ayoKey
+        subfolder.Parent = backpack
         if template:GetAttribute("earnedItem") or template:GetAttribute("purchaseAmount") then
             continue;
         end
-        local newtemplate = template:Clone()
-        newtemplate.Parent = localfolder
-        backpack[ayoKey] = {
-            instance = newtemplate
-        }
+        for i = 1, template:GetAttribute("count") or 1 do
+            local newplaceable = Placeable.new(ayoKey)
+            newplaceable.Instance.Parent = subfolder;
+            newplaceable.Instance.Name = newplaceable.UnitKey;
+        end
     end
-    
+
     local self = {
+        Name = instance.Name;
+        UnitKey = unitKey;
         Instance = instance;
         Backpack = backpack;
         Inventory = {};
         Changed = Signal.new();
     };
+
+    instance:SetAttribute("unitKey", self.UnitKey);
+    instance:SetAttribute("name", instance.Name);
 
     return setmetatable(self, Character);
 end

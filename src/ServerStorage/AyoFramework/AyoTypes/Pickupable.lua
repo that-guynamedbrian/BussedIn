@@ -1,4 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local backpackFolder = ReplicatedStorage.AyoFramework.BackpackFolder
 
 local Types = require(ReplicatedStorage.AyoFramework.Types)
 
@@ -6,22 +7,17 @@ local Types = require(ReplicatedStorage.AyoFramework.Types)
 local Pickupable = {}::Types.PickupableAyo;
 
 function Pickupable:Pickup(char:Types.CharacterAyo)
-   char.Backpack[self.AyoKey] = char.Backpack[self.AyoKey] or {};
-   table.insert(char.Backpack[self.AyoKey], {
-      unitKey = self.UnitKey;
-      unit = self;
-   });
+   self.Instance.Parent = char.Backpack;
    char.Changed:Fire(char,"Backpack");
 end
 
 function Pickupable:Remove(char:Types.CharacterAyo)
-   for i, pair in char.Backpack[self.AyoKey] do
-      if pair.unitKey == self.UnitKey then
-         table.remove(char.Backpack[self.AyoKey],i)
-         pair.unit:Cleanup()
-         char.Changed.Fire(char,"Backpack")
+   for i, instance in char.Backpack do
+      if instance:GetAttribute("unitKey") == self.UnitKey then
+         self:Cleanup();
       end
    end
+   char.Changed:Fire(char,"Backpack");
 end
 
 function Pickupable:Equip(char:Types.CharacterAyo)
@@ -30,6 +26,7 @@ function Pickupable:Equip(char:Types.CharacterAyo)
    if inHand then
       inHand.HeldBy = nil;
       hum:UnequipTools();
+      inHand.Instance.Parent = backpackFolder[char.UnitKey]
    end
    char.InHand = self;
    self.HeldBy = char;
@@ -46,6 +43,7 @@ function Pickupable:Unequip()
    char.Instance:FindFirstChildOfClass("Humanoid"):UnequipTools();
    char.InHand = nil;
    self.HeldBy = nil;
+   self.Instance.Parent = backpackFolder:FindFirstChild(char.UnitKey)
    char.Changed:Fire(char,"InHand");
 end
 

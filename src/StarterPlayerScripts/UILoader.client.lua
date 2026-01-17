@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local StarterGui = game:GetService("StarterGui")
 
 
 local React = require(ReplicatedStorage.Packages.React)
@@ -20,8 +21,11 @@ ReplicaClient.OnNew("LocalCharacterAyo", function(replica: ReplicaClient.Replica
     coroutine.resume(co, replica)
 end)
 ReplicaClient.RequestData()
-local backpackReplica = coroutine.yield()
+local backpackReplica:ReplicaClient.Replica = coroutine.yield()
 
+print(backpackReplica.Data)
+
+StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
 local root = ReactRoblox.createRoot(screenGui)
 root:render(React.createElement(RootUI,{
     backpackReplica = backpackReplica

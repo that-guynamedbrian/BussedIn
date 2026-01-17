@@ -3,6 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Signal = require(ReplicatedStorage.Utils.Signal)
 
 export type AyoUnit = {
+   Name:string;
    Instance: Instance;
    AyoType: string;
    AyoKey: string;

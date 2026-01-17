@@ -19,6 +19,8 @@ Tool.__newindex = function(self:Types.CharacterAyo, index, value)
    self.Changed:Fire(self[index]);
 end
 
+local toolsCache = {}
+
 function Tool.new(ayoKey:string)
    assert(typeof(ayoKey) == "string", "Invalid parameter 'ayoKey', must be of type string");
    
@@ -28,18 +30,27 @@ function Tool.new(ayoKey:string)
    activatedModule:Destroy();
 
    local self = {
+      Name = rootInstance.Name;
       Instance = rootInstance;
       AyoKey = ayoKey;
       UnitKey = HttpService:GenerateGUID(false);
       Activate = activatedFunc;
    } :: Types.ToolAyo;
 
+   rootInstance:SetAttribute("ayoType", Tool.AyoType);
+   rootInstance:SetAttribute("ayoKey", ayoKey);
    rootInstance:SetAttribute("unitKey", self.UnitKey);
+   rootInstance:SetAttribute("name", rootInstance.Name)
    rootInstance.Activated:Connect(function()
       activatedFunc(self);
    end);
 
+   toolsCache[self.UnitKey] = self;
    return setmetatable(self, Tool);
+end
+
+function Tool.fromUnitKey(unitKey:string)
+   return toolsCache[unitKey];
 end
 
 return Tool;

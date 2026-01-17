@@ -35,7 +35,7 @@ local function ItemIcon(props)
 	}, {
 		["ImageLabel"] = React.createElement("ImageLabel", {
 			ScaleType = Enum.ScaleType.Fit,
-			Image = props.tool.Instance.TextureId,
+			Image = props.instance.TextureId,
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.227649018, 0, 0.192578718, 0),
 			Size = UDim2.new(0.527449369, 0, 0.493510336, 0),
@@ -48,7 +48,7 @@ local function ItemIcon(props)
 			TextSize = 14,
 			Size = UDim2.new(0.378614932, 0, 0.162858352, 0),
 			TextColor3 = Color3.fromRGB(0, 91, 175),
-			Text = props.itemName,
+			Text = props.instance:GetAttribute("name"),
 			FontSize = Enum.FontSize.Size14,
 			TextWrapped = true,
 			BackgroundTransparency = 1,
@@ -152,12 +152,11 @@ local function createInnerTab(props)
 	local backpack = React.useContext(BackpackItemsContext.Context)
 	local icons = {}
 
-	for ayoKey, items in backpack do
-		if items[1] then
+	for ayoKey, items in backpack:GetChildren() do
+		if items[1] and items[1]:GetAttribute("ayoType") == "Tool" then
 			table.insert(icons, React.createElement(ItemIcon,{
 				ayoKey = ayoKey;
-				unitKey = items[1].unitKey;
-				tool = items[1].unit;
+				instance = items[1];
 			}))
 		end
 	end

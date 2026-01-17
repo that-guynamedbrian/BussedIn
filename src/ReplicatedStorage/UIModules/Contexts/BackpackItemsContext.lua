@@ -9,7 +9,7 @@ export type ContextValue = {
 local BackpackItemsContext = React.createContext({})
 
 local function BackpackItemsContextProvider(props)
-    local replica:ReplicaClient.Replica = props.value
+    local replica:ReplicaClient.Replica = props
     local backpack, setBackpack = React.useState(replica.Data)
     replica:OnSet({"Backpack"}, function()
         setBackpack(replica.Data);

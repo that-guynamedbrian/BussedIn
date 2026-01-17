@@ -1,3 +1,4 @@
+local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
@@ -22,9 +23,14 @@ function Placeable.new(ayoKey:string)
 
     local self = {
         AyoKey = ayoKey;
+        UnitKey = HttpService:GenerateGUID(false);
         Instance = rootInstance;
     } :: Types.PlaceableAyo;
     
+    rootInstance:SetAttribute("ayoType", Placeable.AyoType)
+    rootInstance:SetAttribute("ayoKey", ayoKey)
+    rootInstance:SetAttribute("unitKey", self.UnitKey)
+    rootInstance:SetAttribute("name", rootInstance.Name)
     return setmetatable(self, Placeable);
 end
 

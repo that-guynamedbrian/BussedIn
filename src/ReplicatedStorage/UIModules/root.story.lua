@@ -12,9 +12,11 @@ local story = {
     react = React;
     reactRoblox = ReactRoblox;
     story = function(props)
-        local charinfo = Players:CreateHumanoidModelFromUserIdAsync(1151905092)
-        local char =  Character.new(charinfo)
-        
+        local charModel = Players:CreateHumanoidModelFromUserIdAsync(1151905092)
+        charModel:PivotTo(CFrame.new(315.329, 2.5, -602.283)*CFrame.Angles(0, math.rad(180), 0))
+        charModel.Parent = workspace
+        local char =  Character.new(charModel)
+
         local janitor = UILabs.Environment.GetJanitor()
         janitor:Add(char.Instance)
         janitor:Add(char.Backpack)

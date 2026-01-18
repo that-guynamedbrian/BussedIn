@@ -1,7 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-
-local Types = require(ReplicatedStorage.AyoFramework.Types)
 local React = require(ReplicatedStorage.Packages.React)
 
 local HotbarItemsContext = React.createContext({})

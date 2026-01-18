@@ -27,6 +27,7 @@ local function GlobalUIContextProvider(props)
     local value = {
         HUDToggleState = HUDToggleState;
         InventoryToggleState = InventoryToggleState;
+        Character = props.value.CharReplica.Data
     }
     
     return React.createElement(GlobalUIContext.Provider, {

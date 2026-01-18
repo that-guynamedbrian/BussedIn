@@ -5,7 +5,16 @@ local ReplicaServer = require(script.Parent.ReplicaServer)
 local Character = require(ServerStorage.AyoFramework.AyoTypes.Character)
 
 Players.PlayerAdded:Connect(function(player)
-    local characterInstance = player.Character or player.CharacterAdded:Wait();
+    local characterInstance = player.Character or player.CharacterAdded:Wait()
+    while characterInstance.Parent ~= workspace do
+        task.wait()
+    end
+    
+    for _, instance in characterInstance:GetChildren() do
+        if instance.SetNetworkOwner ~= nil then
+            instance:SetNetworkOwner(nil)
+        end
+    end
     local char = Character.new(characterInstance);
     local shallow = table.clone(char)
     setmetatable(shallow, nil)
@@ -18,6 +27,8 @@ Players.PlayerAdded:Connect(function(player)
         Token = ReplicaServer.Token("LocalCharacterAyo");
         Data = shallow;
     })
+    
+    print(shallow)
     charReplica:Replicate()
     char.Changed:Connect(function(index:string)
         charReplica:Set({index}, char[index]);

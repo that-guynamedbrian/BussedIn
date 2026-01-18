@@ -19,6 +19,8 @@ Character.__newindex = function(self:Types.CharacterAyo, index, value)
     self.Changed:Fire(index);
 end
 
+local characters_cache = {}
+
 function Character:AddToBackpack(toPickup:Types.PickupableAyo)
     toPickup:Pickup(self);
 end
@@ -37,7 +39,7 @@ function Character:Unequip()
     hum:UnequipTools();
 end;
 
-function Character.new(instance:Model)
+function Character.new(rootinstance:Model)
     local unitKey = HttpService:GenerateGUID(false)
     local backpack = Instance.new("Folder")
     backpack.Name = unitKey
@@ -53,7 +55,7 @@ function Character.new(instance:Model)
         if template:GetAttribute("earnedItem") or template:GetAttribute("purchaseAmount") then
             continue;
         end;
-        for i = 1, template:GetAttribute("count") or 1 do
+        for i = 1, template:GetAttribute("count") or 5 do
             local newtool = Tool.new(ayoKey);
             newtool.Instance.Parent = subfolder;
             newtool.Instance.Name = newtool.UnitKey;
@@ -67,7 +69,7 @@ function Character.new(instance:Model)
         if template:GetAttribute("earnedItem") or template:GetAttribute("purchaseAmount") then
             continue;
         end
-        for i = 1, template:GetAttribute("count") or 1 do
+        for i = 1, template:GetAttribute("count") or 5 do
             local newplaceable = Placeable.new(ayoKey)
             newplaceable.Instance.Parent = subfolder;
             newplaceable.Instance.Name = newplaceable.UnitKey;
@@ -75,20 +77,25 @@ function Character.new(instance:Model)
     end
 
     local self = {
-        Name = instance.Name;
+        Name = rootinstance.Name;
         UnitKey = unitKey;
-        Instance = instance;
+        Instance = rootinstance;
         Backpack = backpack;
         Inventory = inventory;
         Changed = Signal.new();
     };
 
-    instance:SetAttribute("unitKey", self.UnitKey);
-    instance:SetAttribute("name", instance.Name);
-
+    rootinstance:SetAttribute("unitKey", self.UnitKey);
+    rootinstance:SetAttribute("name", rootinstance.Name);
+    characters_cache[unitKey] = self
     return setmetatable(self, Character);
 end
 
+function Character.fromUnitKey(unitKey:string)
+    return characters_cache[unitKey];
+end
+
 return Character :: {
-    new: (instance:Model)->Types.CharacterAyo
+    new: (rootinstance:Model)->Types.CharacterAyo;
+    fromUnitKey: (unitKey:string)->Types.CharacterAyo;
 };

@@ -6,24 +6,29 @@ local BackpackItemsContext = require(ReplicatedStorage.UIModules.Contexts.Backpa
 local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
 
 local function ItemIcon(props)
-	local hotbarItems = React.useContext(HotbarItemsContext.Context)
-	
+	local hotbarItemsState = React.useContext(HotbarItemsContext.Context)
+	local backpackItemsState = React.useContext(BackpackItemsContext.Context)
+
+	local count = React.useMemo(function()
+		return #backpackItemsState[props.instance:GetAttribute("ayoKey")]:GetChildren() or 1
+	end,{backpackItemsState, props.instance})
+
 	local toggleHotbarItem = React.useCallback(function()
 		print(props.instance:GetAttribute("name"))
-		for _, tuple in hotbarItems do
+		for _, tuple in hotbarItemsState do
 			if tuple.Item ~= nil and tuple.Item:GetAttribute("ayoKey") == props.instance:GetAttribute("ayoKey") then
 				print("Changed to"..tuple.Item:GetAttribute("name"))
 				tuple.ChangeItem(nil)
 				return
 			end
 		end
-		for _, tuple in hotbarItems do
+		for _, tuple in hotbarItemsState do
 			if tuple.Item == nil then
 				tuple.ChangeItem(props.instance)
 				return
 			end
 		end
-	end, {hotbarItems, props.instance})
+	end, {hotbarItemsState, props.instance})
 
 	return React.createElement("ImageButton", {
 		ScaleType = Enum.ScaleType.Fit,
@@ -69,14 +74,14 @@ local function ItemIcon(props)
 			Size = UDim2.new(0.0991038159, 0, 0.11084491, 0),
 			BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		}, {}),
-
+		]]
 		["Amount"] = React.createElement("TextLabel", {
 			FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.ExtraBold, Enum.FontStyle.Normal),
 			TextSize = 14,
 			Size = UDim2.new(0.141667634, 0, 0.162858352, 0),
 			TextColor3 = Color3.fromRGB(0, 91, 175),
 	
-			Text = "x5",
+			Text = "x"..count,
 			FontSize = Enum.FontSize.Size14,
 			TextWrapped = true,
 			BackgroundTransparency = 1,
@@ -85,7 +90,7 @@ local function ItemIcon(props)
 			TextScaled = true,
 			TextWrap = true,
 		}, {}),
-
+		--[[
 		["Counter"] = React.createElement("Frame", {
 	
 			BackgroundTransparency = 1,

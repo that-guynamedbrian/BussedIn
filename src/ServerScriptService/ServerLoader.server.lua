@@ -9,12 +9,8 @@ Players.PlayerAdded:Connect(function(player)
     while characterInstance.Parent ~= workspace do
         task.wait()
     end
+    characterInstance:FindFirstChild("HumanoidRootPart"):SetNetworkOwner(nil)
     
-    for _, instance in characterInstance:GetChildren() do
-        if instance.SetNetworkOwner ~= nil then
-            instance:SetNetworkOwner(nil)
-        end
-    end
     local char = Character.new(characterInstance);
     local shallow = table.clone(char)
     setmetatable(shallow, nil)

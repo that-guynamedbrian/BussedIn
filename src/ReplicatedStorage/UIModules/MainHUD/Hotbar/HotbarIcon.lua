@@ -3,18 +3,23 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local React = require(ReplicatedStorage.Packages.React)
 local GlobalUIContext = require(ReplicatedStorage.UIModules.Contexts.GlobalUIContext)
 local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
+local Net = require(ReplicatedStorage.Utils.Net)
 
 return function(props)
     local hotbarItemState = React.useContext(HotbarItemsContext.Context)
     local globalUIState = React.useContext(GlobalUIContext.Context)
     local tool = hotbarItemState[props.index]
+
     local activatedFunc = React.useCallback(function()
-        if tool.Item:IsDescendantOf(globalUIState.Character.Instance) then
-            globalUIState.Character.Instance:FindFirstChildOfClass("Humanoid"):UnequipTools()
+        local success
+        if tool.Item and tool.Item:IsDescendantOf(globalUIState.Character.Instance) then
+            success = Net.Request(10,"Unequip")
         else
-            globalUIState.Character.Instance:FindFirstChildOfClass("Humanoid"):EquipTool(tool.Item)
+            success = Net.Request(10,"Equip", tool.Item)
         end
+        return success
     end, {tool, props.index})
+
     return React.createElement("ImageButton", {
         ScaleType = Enum.ScaleType.Fit,
         BorderColor3 = Color3.fromRGB(0, 0, 0),

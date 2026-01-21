@@ -1,7 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
 
-local Inventory = require(ReplicatedStorage.UIModules.Inventory)
 local Character = require(ServerStorage.AyoFramework.AyoTypes.Character)
 local Tool = require(ServerStorage.AyoFramework.AyoTypes.Tool)
 local Net = require(ReplicatedStorage.Utils.Net)

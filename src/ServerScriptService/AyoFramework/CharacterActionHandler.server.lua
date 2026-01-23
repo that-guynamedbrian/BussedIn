@@ -5,7 +5,6 @@ local Types = require(ReplicatedStorage.AyoFramework.Types)
 local Character = require(ServerStorage.AyoFramework.AyoTypes.Character)
 local Tool = require(ServerStorage.AyoFramework.AyoTypes.Tool)
 local Net = require(ReplicatedStorage.Utils.Net)
-local Handler = {}
 
 local function getChar(player:Player): (Model,Types.CharacterAyo)
     local charInstance = player.Character or player.CharacterAdded:Wait()
@@ -45,6 +44,7 @@ local Actions = {
     end;
 
     Equip = function(player:Player, toEquip:Instance)
+        warn(toEquip)
         local _charInstance, char = getChar(player)
         assert(
             typeof(toEquip) == "Instance" and toEquip:IsA("Tool"),
@@ -80,5 +80,3 @@ for action, callback in Actions do
         return success
     end);
 end
-
-return Handler

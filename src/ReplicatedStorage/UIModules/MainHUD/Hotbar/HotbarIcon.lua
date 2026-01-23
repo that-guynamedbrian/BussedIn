@@ -12,6 +12,7 @@ return function(props)
 
     local activatedFunc = React.useCallback(function()
         local success
+        warn(tool)
         if tool.Item and tool.Item:IsDescendantOf(globalUIState.Character.Instance) then
             success = Net.Request(10,"Unequip")
         else

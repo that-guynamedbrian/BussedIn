@@ -6,7 +6,7 @@ local HotbarItemsContext = React.createContext({})
 
 local function HotbarItemsContextProvider(props)
     local items = {}
-    print(props.value)
+    
     for i = 1, 10 do
         local hotbarItemState = {React.useState(props.value.Items[i] or nil)};
         items[i] = {

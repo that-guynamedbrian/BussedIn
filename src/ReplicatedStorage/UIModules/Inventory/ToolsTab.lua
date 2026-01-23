@@ -1,9 +1,9 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-
 local React = require(ReplicatedStorage.Packages.React)
 local BackpackItemsContext = require(ReplicatedStorage.UIModules.Contexts.BackpackItemsContext)
 local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
+local Net = require(ReplicatedStorage.Utils.Net)
 
 local function ItemIcon(props)
 	local hotbarItemsState = React.useContext(HotbarItemsContext.Context)
@@ -16,15 +16,24 @@ local function ItemIcon(props)
 	local toggleHotbarItem = React.useCallback(function()
 		print(props.instance:GetAttribute("name"))
 		for _, tuple in hotbarItemsState do
-			if tuple.Item ~= nil and tuple.Item:GetAttribute("ayoKey") == props.instance:GetAttribute("ayoKey") then
+			local tool = tuple.Item
+			if tool ~= nil and tool:GetAttribute("ayoKey") == props.instance:GetAttribute("ayoKey") then
 				print("Changed to"..tuple.Item:GetAttribute("name"))
-				tuple.ChangeItem(nil)
+				local success = Net.Request(5, "RemoveFromInventory",tool)
+				if success then
+					tuple.ChangeItem(nil)
+				end
 				return
 			end
 		end
 		for _, tuple in hotbarItemsState do
-			if tuple.Item == nil then
-				tuple.ChangeItem(props.instance)
+			local tool = tuple.Item
+			if tool == nil then
+				local success = Net.Request(5, "AddToInventory", props.instance)
+				print(success)
+				if success then
+					tuple.ChangeItem(props.instance)
+				end
 				return
 			end
 		end

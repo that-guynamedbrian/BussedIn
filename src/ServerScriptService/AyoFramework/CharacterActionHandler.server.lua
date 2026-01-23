@@ -44,7 +44,6 @@ local Actions = {
     end;
 
     Equip = function(player:Player, toEquip:Instance)
-        warn(toEquip)
         local _charInstance, char = getChar(player)
         assert(
             typeof(toEquip) == "Instance" and toEquip:IsA("Tool"),
@@ -56,19 +55,13 @@ local Actions = {
         )
         local tool = Tool.fromUnitKey(toEquip:GetAttribute("unitKey")::string)
         char:Equip(tool)
+        print(char)
     end;
 
-    Unequip = function(player:Player, toUnequip:Instance)
+    Unequip = function(player:Player)
         local _charInstance, char = getChar(player)
-        assert(
-            typeof(toUnequip) == "Instance" and toUnequip:IsA("Tool"),
-            "Second arg to Equip must be a Tool"
-        )
-        assert(
-            toUnequip:IsDescendantOf(_charInstance),
-            "Tool to equip must be in inventory"
-        )
-        local tool = Tool.fromUnitKey(toUnequip:GetAttribute("unitKey")::string)
+        local tool = char.InHand
+        assert(tool ~= nil, "No Tool to unequip")
         char:Unequip(tool)
     end
 }

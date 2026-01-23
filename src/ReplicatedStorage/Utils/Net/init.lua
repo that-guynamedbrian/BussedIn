@@ -35,7 +35,7 @@ local function HandleInvocation(...:any)
 	assert(typeof(portId) == "string", "Invalid port id");
 	local callback = Callbacks[portId];
 	if callback then
-        return callback(...);
+        return callback(unpack(args));
     end
     return warn(`No callback subscribed to port [{portId}]`)
 end
@@ -85,18 +85,20 @@ end
 -- player, portid, args
 function Net.Request(timeout:number, ...:any): ...any
     local args = nil;
+    task.spawn(function(...)
+        args = {remoteFunc:InvokeServer(...)};
+    end,...);
+
     local t0 = os.clock();
-    args =  {
-        coroutine.wrap(function(...)
-            coroutine.yield(remoteFunc:InvokeServer(...));
-        end)(...);
-    }
     while timeout > os.clock() - t0 do
         if args then 
             return unpack(args);
         end
         task.wait();
     end
+    
+    local portId = ({...})[1]
+    warn(`Port: [{portId}] timed out after {os.clock()-t0} seconds`)
     return nil;
 end
 

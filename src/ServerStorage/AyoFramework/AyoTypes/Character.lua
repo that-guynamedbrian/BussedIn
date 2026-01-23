@@ -38,16 +38,15 @@ function Character:RemoveFromInventory(toRemove:Types.PickupableAyo)
     self:AddToBackpack(toRemove)
 end
 
+
+
 function Character:Equip(toEquip:Types.ToolAyo)
-    local hum = self.Instance:FindFirstChildOfClass("Humanoid");
-    hum:EquipTool(toEquip.Instance);
+    toEquip:Equip(self)
 end
 
 function Character:Unequip()
-    local hum = self.Instance:FindFirstChildOfClass("Humanoid")
     local tool = self.InHand
-    hum:UnequipTools()
-    tool.Instance.Parent = self.Inventory
+    tool:Unequip(self)
 end;
 
 function Character.new(rootinstance:Model)

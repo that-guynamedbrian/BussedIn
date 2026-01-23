@@ -14,10 +14,6 @@ local Tool = {
    Remove = Pickupable.Remove;
 };
 Tool.__index = Tool;
-Tool.__newindex = function(self:Types.CharacterAyo, index, value)
-   rawset(self, index, value)
-   self.Changed:Fire(self[index]);
-end
 
 local toolsCache = {}
 

@@ -16,18 +16,9 @@ export type CharacterAyo = {
    Instance: Model;
    AyoType: "Character";
    InHand: ToolAyo|PlaceableAyo;
-   Backpack: {
-      [string]:{  -- maps ayoKeys to array of {unitKey, unit} pairs with that ayoKey
-         {
-            unitKey: string,
-            unit: PickupableAyo
-         }
-      };
-   };
+   Backpack: Folder;
 
-   Inventory: { -- maps UnitKey to unit
-      [string]: PickupableAyo
-   };
+   Inventory: Folder;
 
    AddToInventory: (self:CharacterAyo, toAdd:ToolAyo)->();
    RemoveFromInventory: (self:CharacterAyo, toRemove:ToolAyo)->();

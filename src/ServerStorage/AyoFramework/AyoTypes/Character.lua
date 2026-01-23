@@ -14,10 +14,6 @@ local Character = {
     AyoType = "Character";
 } :: Types.CharacterAyo;
 Character.__index = Character;
-Character.__newindex = function(self:Types.CharacterAyo, index, value)
-    rawset(self, index, value)
-    self.Changed:Fire(index);
-end
 
 local characters_cache = {}
 

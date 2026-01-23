@@ -6,12 +6,13 @@ local Types = require(ReplicatedStorage.AyoFramework.Types)
 local Pickupable = {}::Types.PickupableAyo;
 
 function Pickupable:Pickup(char:Types.CharacterAyo)
-   self.Instance.Parent = char.Backpack;
+   local itemFolder = char.Backpack:FindFirstChild(self.AyoKey)
+   self.Instance.Parent = itemFolder;
    char.Changed:Fire(char,"Backpack");
 end
 
 function Pickupable:Remove(char:Types.CharacterAyo)
-   for i, instance in char.Backpack do
+   for i, instance in char.Backpack:GetChildren() do
       if instance:GetAttribute("unitKey") == self.UnitKey then
          self:Cleanup();
       end
@@ -22,6 +23,8 @@ end
 function Pickupable:Equip(char:Types.CharacterAyo)
    local inHand = char.InHand;
    local hum = char.Instance:FindFirstChildOfClass("Humanoid");
+   local hrp = char.Instance:FindFirstChild("HumanoidRootPart")
+   local networkOwner = hrp:GetNetworkOwner()
    if inHand then
       inHand.HeldBy = nil;
       hum:UnequipTools();
@@ -30,16 +33,20 @@ function Pickupable:Equip(char:Types.CharacterAyo)
    char.InHand = self;
    self.HeldBy = char;
    hum:EquipTool(self.Instance);
+   hrp:SetNetworkOwner(networkOwner)
    char.Changed:Fire(char,"InHand");
 end
 
 function Pickupable:Unequip()
+   local char = self.HeldBy;
+   local hrp = char.Instance:FindFirstChild("HumanoidRootPart")
+   local networkOwner = hrp:GetNetworkOwner()
    if self.HeldBy == nil then
       warn("Not in hand");
       return;
    end
-   local char = self.HeldBy;
    char.Instance:FindFirstChildOfClass("Humanoid"):UnequipTools();
+   hrp:SetNetworkOwner(networkOwner)
    char.InHand = nil;
    self.HeldBy = nil;
    self.Instance.Parent = char.Inventory

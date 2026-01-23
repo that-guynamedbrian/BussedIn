@@ -69,7 +69,7 @@ function Signal:Fire(...)
     local receiver = self._next;
     while receiver ~= self do
         receiver:_call(...);
-        receiver = self._next;
+        receiver = receiver._next;
     end
 end;
 
@@ -108,7 +108,7 @@ function Signal:Destroy()
     local receiver = self._next;
     while receiver ~= self do
         receiver:Disconnect();
-        receiver = self._next;
+        receiver = receiver._next;
     end
     table.clear(self);
 end

@@ -14,6 +14,8 @@ local Character = {
     AyoType = "Character";
 } :: Types.CharacterAyo;
 Character.__index = Character;
+Character.PLACEMENT_RANGE = 100;
+Character.MAX_CAM_DISTANCE = 130;
 
 local characters_cache = {}
 
@@ -44,6 +46,13 @@ function Character:Unequip()
     local tool = self.InHand
     tool:Unequip(self)
 end;
+
+
+
+function Character:Place(toPlace:Types.PlaceableAyo, start:Vector3, direction:Vector3)
+    return toPlace:Place(start, direction);
+end
+
 
 function Character.new(rootinstance:Model)
     local unitKey = HttpService:GenerateGUID(false)
@@ -104,4 +113,6 @@ end
 return Character :: {
     new: (rootinstance:Model)->Types.CharacterAyo;
     fromUnitKey: (unitKey:string)->Types.CharacterAyo;
+    PLACEMENT_RANGE:number;
+    MAX_CAM_DISTANCE:number;
 };

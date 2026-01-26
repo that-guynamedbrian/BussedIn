@@ -3,6 +3,7 @@ local ServerStorage = game:GetService("ServerStorage")
 
 local Types = require(ReplicatedStorage.AyoFramework.Types)
 local Character = require(ServerStorage.AyoFramework.AyoTypes.Character)
+local Placeable = require(ServerStorage.AyoFramework.AyoTypes.Placeable)
 local Tool = require(ServerStorage.AyoFramework.AyoTypes.Tool)
 local Net = require(ReplicatedStorage.Utils.Net)
 
@@ -63,6 +64,30 @@ local Actions = {
         local tool = char.InHand
         assert(tool ~= nil, "No Tool to unequip")
         char:Unequip(tool)
+    end;
+
+    Place = function(player:Player, toPlace:Types.PlaceableAyo, start:Vector3, direction:Vector3)
+        local _charInstance, char = getChar(player)
+        assert(
+            typeof(toPlace) == "Instance" and (toPlace:IsA("Model")),
+            "Second arg to Place must be a Model"
+        )
+        assert(
+            toPlace:IsDescendantOf(char.Inventory),
+            "Tool to equip must be in inventory"
+        )
+        assert(
+            typeof(start) == "Vector3" or typeof(direction) == "Vector3",
+            "Invalid start/end"
+        )
+        
+        local distance = (_charInstance:FindFirstChild("HumanoidRootPart").Position - start).Magnitude
+        direction = direction.Unit * Character.PLACEMENT_RANGE
+        assert(distance <= Character.MAX_CAM_DISTANCE, "Placement raycast start position too far from Character")
+        
+        local placeable = Placeable.fromUnitKey(toPlace:GetAttribute("unitKey")::string)
+        
+        assert(char:Place(placeable, start, direction), "Failed Placement")
     end
 }
 

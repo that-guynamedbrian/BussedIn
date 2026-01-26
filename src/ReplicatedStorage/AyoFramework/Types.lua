@@ -61,7 +61,7 @@ export type PlaceableAyo = {
    Instance: Tool;
    AyoType: "Placeable";
 
-   Place: (self:PlaceableAyo, char:CharacterAyo, location:CFrame)->();
+   Place: (self:PlaceableAyo, start:Vector3, direction:Vector3)->(boolean);
 } & PickupableAyo;
 
 export type InteractableAyo = {

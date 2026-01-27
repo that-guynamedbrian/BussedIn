@@ -38,7 +38,7 @@ function Tool.new(ayoKey:string)
    rootInstance:SetAttribute("unitKey", self.UnitKey);
    rootInstance:SetAttribute("name", rootInstance.Name)
    rootInstance.Activated:Connect(function()
-      activatedFunc(self);
+      activatedFunc(self, self.HeldBy);
    end);
 
    toolsCache[self.UnitKey] = self;

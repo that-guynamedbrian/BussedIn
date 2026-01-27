@@ -6,7 +6,7 @@ local Tool = require(ServerStorage.AyoFramework.AyoTypes.Tool)
 
 local npcModel:Model = ServerStorage.AyoFramework.Characters.Enemy1:Clone()
 npcModel.Parent = workspace
-npcModel:MoveTo(Vector3.new(61.033, -0.807, 84.919))
+npcModel:MoveTo(Vector3.new(55.767, 2.491, 566.776))
 local char = Character.new(npcModel)
 
 local VISION_RANGE = 50

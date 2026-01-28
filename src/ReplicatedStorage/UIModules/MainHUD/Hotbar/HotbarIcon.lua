@@ -5,20 +5,39 @@ local GlobalUIContext = require(ReplicatedStorage.UIModules.Contexts.GlobalUICon
 local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
 local Net = require(ReplicatedStorage.Utils.Net)
 
+
+local function enterPlacementMode()
+    
+end
+
+local function exitPlacementMode()
+    
+end
+
 return function(props)
     local hotbarItemState = React.useContext(HotbarItemsContext.Context)
     local globalUIState = React.useContext(GlobalUIContext.Context)
-    local tool = hotbarItemState[props.index]
+    local item = React.useMemo(function() 
+        return hotbarItemState[props.index].Item
+    end,{hotbarItemState, props.index})
 
     local activatedFunc = React.useCallback(function()
         local success
-        if tool.Item and tool.Item:IsDescendantOf(globalUIState.Character.Instance) then
+        if item and item:IsDescendantOf(globalUIState.Character.Instance) then
             success = Net.Request(10,"Unequip")
+            if success and item:GetAttribute("ayoType") == "Placeable" then
+                item.Parent = globalUIState.Character.Inventory
+            end
         else
-            success = Net.Request(10,"Equip", tool.Item)
+            success = Net.Request(10,"Equip", item)
+            if success and item:GetAttribute("ayoType") == "Placeable" then
+                item.Parent = globalUIState.Character.Instance
+                print(item)
+            end
         end
+
         return success
-    end, {tool, props.index})
+    end, {item, props.index})
 
     return React.createElement("ImageButton", {
         ScaleType = Enum.ScaleType.Fit,
@@ -52,7 +71,7 @@ return function(props)
         ["ImageLabel"] = (hotbarItemState[props.index].Item ~= nil) and React.createElement("ImageLabel", {
             ScaleType = Enum.ScaleType.Fit,
             BorderColor3 = Color3.fromRGB(0, 0, 0),
-            Image = tool.Item.TextureId,
+            Image = item:IsA("Tool") and item.TextureId or item:GetAttribute("Icon"),
             BackgroundTransparency = 1,
             Position = UDim2.new(0.130262032, 0, 0.272099227, 0),
             

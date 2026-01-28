@@ -1,6 +1,7 @@
 --!strict
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local PlaceablesTab = require(script.PlaceablesTab)
 local ToolsTab = require(script.ToolsTab)
 local React = require(ReplicatedStorage.Packages.React)
 local GlobalUIContext = require(ReplicatedStorage.UIModules.Contexts.GlobalUIContext)
@@ -60,10 +61,9 @@ local function InventoryTab(props)
 			setTab = setTab
 		}),
 
-		--[[["PlaceablesInnerTabs"] = React.createElement(nil,{
-			categoryName = "Placeable",
+		["PlaceablesInnerTabs"] = React.createElement(PlaceablesTab,{
 			Visible = currentTab == "PLACEABLES"
-		}),]]
+		}),
 
 		["ToolsInnerTabs"] = React.createElement(ToolsTab,{
 			Visible = currentTab == "TOOLS"

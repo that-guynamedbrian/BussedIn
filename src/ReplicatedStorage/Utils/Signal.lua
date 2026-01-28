@@ -1,9 +1,9 @@
-
+--!strict
 -- Types
 -- -- Receiver type
 -- -- -- private
 type _Receiver = Receiver & {
-    _next: _Receiver | _Signal;
+    _next: _Receiver;
     _prev: _Receiver | _Signal;
     _func: (...any)->();
     _catch: (errorMessage:string, ...any)->();
@@ -14,13 +14,13 @@ export type Receiver = {
     Type: "Receiver";
     Disconnect: (self:_Receiver|any)->();
 
-    Catch: (self:_Receiver|any, errorhandler:(errorMessage:string, ...any)->())->(Receiver);
+    Catch: (self:Receiver|any, errorhandler:(errorMessage:string, ...any)->())->(Receiver);
 };
 
 -- -- Signal type
 -- -- -- private
 type _Signal = Signal & {
-    _next: _Receiver | _Signal;
+    _next: _Receiver;
     _prev: _Receiver | _Signal;
 };
 -- -- -- public
@@ -44,22 +44,30 @@ Receiver.__index = Receiver;
 -- -- Receiver
 -- -- -- private
 function Receiver:_call(...)
-    local success, errorMessage = pcall(self._func, ...);
-    if self._catch and not success then
-        self._catch(errorMessage, ...);
+    local success, errorMessage = pcall(self._func, ...) :: boolean, typeof"";
+    if not success then
+        if self._catch then
+            self._catch(errorMessage, ...);
+        else
+            error(errorMessage)
+        end
     end
 end
 
 -- -- -- public
 function Receiver:Catch(errorhandler)
     assert(self._catch == nil, "error handler function already attached to receiver");
-    self._catch = errorhandler;
+    assert(typeof(errorhandler) == "function", "error handler must be a function");
+    (self::any)._catch = errorhandler;
     return self;
 end;
 
 function Receiver:Disconnect()
-    self._next._prev = self._prev;
-    self._prev._next = self._next;
+    local nextReceiver, prevReceiver = self._next, self._prev
+    if nextReceiver then 
+        nextReceiver._prev = prevReceiver;
+    end
+    prevReceiver._next = nextReceiver;
     table.clear(self);
 end;
 
@@ -67,7 +75,7 @@ end;
 -- -- -- public
 function Signal:Fire(...)
     local receiver = self._next;
-    while receiver ~= self do
+    while receiver ~= nil do
         receiver:_call(...);
         receiver = receiver._next;
     end
@@ -75,21 +83,24 @@ end;
 
 function Signal:Connect(callback)
     assert(typeof(callback) == "function", "callback must be a function");
+    local nextReceiver = self._next
     local receiver = {
         Type = "Receiver";
-        _next = self._next;
+        _next = nextReceiver;
         _prev = self;
         _func = callback;
     };
-    (self._next::any)._prev = receiver::any;
-    self._next = receiver::any;
+    if nextReceiver ~= nil then
+        nextReceiver._prev = receiver;
+    end
+    (self::any)._next = receiver;
     return setmetatable(receiver, Receiver)::any
 end;
 
 function Signal:Once(callback)
     assert(typeof(callback) == "function", "callback must be a function");
-    local receiver;
-    receiver = self:Receive(function(...)
+    local receiver:Receiver;
+    receiver = self:Connect(function(...)
         callback(...);
         receiver:Disconnect();
     end);
@@ -106,9 +117,10 @@ end
 
 function Signal:Destroy()
     local receiver = self._next;
-    while receiver ~= self do
+    while receiver ~= nil do
+        local temp = receiver._next
         receiver:Disconnect();
-        receiver = receiver._next;
+        receiver = temp;
     end
     table.clear(self);
 end
@@ -118,9 +130,9 @@ function Signal.new(self, ...):Signal
     self = {
         Type = "Signal";
     }::any;
-    self._next = self;
-    self._prev = self;
-    return setmetatable(self, Signal);
+    self._next = nil;
+    self._prev = nil;
+    return setmetatable(self, Signal)::any;
 end
 
 return Signal :: {new:()->Signal}

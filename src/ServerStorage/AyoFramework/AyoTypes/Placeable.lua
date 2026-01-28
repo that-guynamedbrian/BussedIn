@@ -8,12 +8,27 @@ local Pickupable = require(script.Parent.Pickupable)
 
 local Placeable = {
     AyoType = "Placeable";
-    Equip = Pickupable.Equip;
-    Unequip = Pickupable.Unequip;
+    Pickup = Pickupable.Pickup;
+    Remove = Pickupable.Remove;
 } :: Types.PlaceableAyo;
 Placeable.__index = Placeable;
 
 local placeables_cache = {}
+
+function Placeable:Equip(char:Types.CharacterAyo)
+    local inHand = char.InHand;
+    if inHand then
+        inHand:Unequip(char);
+    end
+    self.HeldBy = char;
+    char.InHand = self;
+end
+
+function Placeable:Unequip()
+    local char = self.HeldBy;
+    char.InHand = nil;
+    self.HeldBy = nil;
+end
 
 function Placeable:Place(start:Vector3, direction:Vector3)
     local params = RaycastParams.new()
@@ -26,19 +41,23 @@ function Placeable:Place(start:Vector3, direction:Vector3)
     end
     local result = workspace:Raycast(start, direction, params)
     if result == nil then
-        return false
+        return false;
     else
         local model = self.Instance
-        local size = model:GetExtentsSize()
-        local target = CFrame.fromMatrix(result.Position, Vector3.xAxis, result.Normal) * Vector3.new(0,size.Y/2,0)
-        model:PivotTo(target)
-        return true
+        local size = model:GetExtentsSize();
+        local target = CFrame.fromMatrix(result.Position, Vector3.xAxis, result.Normal) * Vector3.new(0,size.Y/2,0);
+        model:PivotTo(target);
+        local char = self.HeldBy;
+        char:Unequip();
+        char:RemoveFromInventory(self);
+        char:RemoveFromBackpack(self);
+        return true;
     end
 end
 
 function Placeable.new(ayoKey:string)
     assert(typeof(ayoKey) == "string", "Invalid parameter 'ayoKey', must be of type string");
-    local rootInstance = AvailableItems.Placeables[ayoKey];
+    local rootInstance = AvailableItems.Placeables[ayoKey]:Clone();
     local unitKey = HttpService:GenerateGUID(false)
     local self = {
         AyoKey = ayoKey;

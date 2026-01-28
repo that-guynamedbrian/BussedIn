@@ -8,7 +8,7 @@ local AyoFolder = ServerStorage.AyoFramework;
 
 local rootClassNameMap = {
    Tool = "Tool";
-   Placeable = "Tool";
+   Placeable = "Model";
    Interactable = "Model";
 }
 
@@ -30,8 +30,7 @@ local function ValidateUnit(instance:Instance, ayoType:string)
       assert(typeof(require(activateModule)) == "function", "'Activate' module must return a function");
       assert(handle and handle:IsA("BasePart"), "");
    elseif ayoType == "Placeable" then
-      local handle = instance:FindFirstChild("Handle");
-      assert(handle and handle:IsA("BasePart"), "");
+      
    elseif ayoType == "Interactable" then
       local prompt = instance:FindFirstAncestorOfClass("ProximityPrompt");
       local triggeredModule = instance:FindFirstChild("Triggered");

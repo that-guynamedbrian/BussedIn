@@ -36,7 +36,7 @@ function Tool.new(ayoKey:string)
    rootInstance:SetAttribute("ayoType", Tool.AyoType);
    rootInstance:SetAttribute("ayoKey", ayoKey);
    rootInstance:SetAttribute("unitKey", self.UnitKey);
-   rootInstance:SetAttribute("name", rootInstance.Name)
+   rootInstance:SetAttribute("name", rootInstance.Name);
    rootInstance.Activated:Connect(function()
       activatedFunc(self, self.HeldBy);
    end);

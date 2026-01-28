@@ -4,8 +4,13 @@ local React = require(ReplicatedStorage.Packages.React)
 local ReactUtils = require(ReplicatedStorage.Utils.ReactUtils)
 
 
+type ContextProps = {
+    model:Model
+}
+
 export type ContextValue = {
     PlacementGhost:Model;
+    ChangePlacementGhost:(Model)->();
     PlacementModeToggleState: typeof(ReactUtils.useToggleState(false));
 }
 
@@ -21,29 +26,41 @@ local PlacementContext = React.createContext({
     PlacementModeToggleState = toggleState 
 }::ContextValue)
 
-local function ghostify(model)
-    
-end
 
-local function PlacementContextProvider(props)
-    local ghost:Model = props.model
-    local transparencies = React.useMemo(function()
-        local tbl = {}  
-        for _, instance in ghost:GetDescendants() do
-            if instance:IsA("BasePart") then
-                tbl[instance.Name] = instance.Transparency
-            end
-        end
-        return tbl
-    end,{ghost})
-    local ghostify = React.useCallback(function(deghostify:boolean)
+local function PlacementContextProvider(props:ContextProps)
+    local ghost, changeGhost = React.useState(props.model)
+    local toggleState = ReactUtils.useToggleState(false)
+    
+    local transparencies = React.useMemo(function()  
+        local tbl = {}
         for _, instance in ghost:GetChildren() do
             if not instance:IsA("BasePart") then continue end
-            instance.Transparency = transparencies[instance.Name] - (deghostify and 0.5 or 1)
+            tbl[instance] = instance.Transparency
         end
-    end,{ghost, transparencies})
+        return tbl
+    end, {ghost})
+
+    React.useEffect(function()
+        for instance, transparency in transparencies do
+            instance.Transparency = toggleState.on and transparency - 0.5 or transparency
+        end
+        return function()
+            for instance, transparency in transparencies do
+                instance.Transparency = transparency
+            end
+        end
+    end, {transparencies, toggleState})
 
     return React.createElement(PlacementContext.Provider,{
-
+        value = {
+            PlacementGhost = ghost;
+            ChangePlacementGhost = changeGhost;
+            PlacementModeToggleState = toggleState;
+        }::ContextValue
     })
 end
+
+return {
+    Context = PlacementContext;
+    ContextProvider = PlacementContextProvider;
+}

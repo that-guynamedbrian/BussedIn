@@ -12,7 +12,7 @@ export type AyoUnit = {
    Cleanup: (self:AyoUnit)->()
 };
 
-export type CharacterAyo = {
+export type CharacterAyo = AyoUnit & {
    Instance: Model;
    AyoType: "Character";
    InHand: ToolAyo|PlaceableAyo;
@@ -71,4 +71,4 @@ export type InteractableAyo = {
    Interact: (self:InteractableAyo, char:CharacterAyo)->();
 } & AyoUnit;
 
-return {};
+return nil;

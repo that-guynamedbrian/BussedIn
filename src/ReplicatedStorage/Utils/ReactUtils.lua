@@ -69,5 +69,12 @@ function ReactUtils.chainElements(
 	return React.createElement(unpack(tuple), {ReactUtils.chainElements(elements, index+1)});
 end
 
+function ReactUtils.joinProps(defaults:{[string]:any}, overwrite:{[string]:any}?)
+	if not overwrite then return defaults end;
+	for key, value in overwrite do
+		defaults[key] = value; 
+	end
+	return defaults;
+end
 
 return ReactUtils

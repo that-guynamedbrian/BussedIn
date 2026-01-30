@@ -1,8 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local ServerStorage = game:GetService("ServerStorage")
 
 local Types = require(ReplicatedStorage.AyoFramework.Types)
-local Character = require(ServerStorage.AyoFramework.AyoTypes.Character)
 local React = require(ReplicatedStorage.Packages.React)
 local ReactUtils = require(ReplicatedStorage.Utils.ReactUtils)
 
@@ -24,7 +22,7 @@ local GlobalUIContext = React.createContext({
     HUDToggleState = toggleState;
     InventoryToggleState = toggleState;
     PlacementToggleState = toggleState;
-    Character = Character.new(Instance.new("Model"));
+    Character = {};
 })
 
 local function GlobalUIContextProvider(props)

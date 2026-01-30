@@ -26,7 +26,7 @@ Players.PlayerAdded:Connect(function(player)
     
     print(shallow)
     charReplica:Replicate()
-    char.Changed:Connect(function(index:string)
+    --[[char.Changed:Connect(function(index:string)
         charReplica:Set({index}, char[index]);
-    end)
+    end)]]
 end)

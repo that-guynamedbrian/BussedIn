@@ -45,12 +45,11 @@ function Placeable:Place(start:Vector3, direction:Vector3)
     else
         local model = self.Instance
         local size = model:GetExtentsSize();
-        local target = CFrame.fromMatrix(result.Position, Vector3.xAxis, result.Normal) * Vector3.new(0,size.Y/2,0);
+        local target = CFrame.fromMatrix(result.Position, Vector3.xAxis, result.Normal) * CFrame.new(0,size.Y/2,0);
         model:PivotTo(target);
+        model.Parent = workspace;
         local char = self.HeldBy;
         char:Unequip();
-        char:RemoveFromInventory(self);
-        char:RemoveFromBackpack(self);
         return true;
     end
 end

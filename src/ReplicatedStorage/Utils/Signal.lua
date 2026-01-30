@@ -44,7 +44,7 @@ Receiver.__index = Receiver;
 -- -- Receiver
 -- -- -- private
 function Receiver:_call(...)
-    local success, errorMessage = pcall(self._func, ...) :: boolean, typeof"";
+    local success, errorMessage = (pcall::any)(self._func, ...);
     if not success then
         if self._catch then
             self._catch(errorMessage, ...);

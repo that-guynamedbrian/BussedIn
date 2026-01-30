@@ -30,7 +30,6 @@ local function ItemIcon(props)
 			local tool = tuple.Item
 			if tool == nil then
 				local success = Net.Request(5, "AddToInventory", props.instance)
-				print(success)
 				if success then
 					tuple.ChangeItem(props.instance)
 				end

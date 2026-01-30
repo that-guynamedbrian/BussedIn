@@ -91,7 +91,7 @@ local Actions = {
         char:Unequip(item)
     end;
 
-    Place = function(player:Player, toPlace:Types.PlaceableAyo, start:Vector3, direction:Vector3)
+    Place = function(player:Player, toPlace:Model, start:Vector3, direction:Vector3)
         local _charInstance, char = getChar(player)
         assert(
             typeof(toPlace) == "Instance" and (toPlace:IsA("Model")),
@@ -118,8 +118,7 @@ local Actions = {
 
 for action, callback in Actions do
     Net.HandleRequest(action, function(...): boolean
-        local success, errormessage = pcall(callback,...)
-        if not success then warn(errormessage) end
-        return success
+        task.spawn(callback,...)
+        return true
     end);
 end

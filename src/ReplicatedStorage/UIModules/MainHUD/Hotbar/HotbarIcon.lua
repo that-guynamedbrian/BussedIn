@@ -21,14 +21,14 @@ return function(props)
             success = Net.Request(10,"Unequip")
             if success and item:GetAttribute("ayoType") == "Placeable" then
                 item.Parent = globalUIState.Character.Inventory
-                ClientPlacementHandler.EnterPlacementMode(item)
+                ClientPlacementHandler.ExitPlacementMode()
                 globalUIState.PlacementToggleState.disable()
             end
         else
             success = Net.Request(10,"Equip", item)
             if success and item:GetAttribute("ayoType") == "Placeable" then
                 item.Parent = globalUIState.Character.Instance
-                ClientPlacementHandler.ExitPlacementMode()
+                ClientPlacementHandler.EnterPlacementMode(item)
                 globalUIState.PlacementToggleState.enable()
             end
         end

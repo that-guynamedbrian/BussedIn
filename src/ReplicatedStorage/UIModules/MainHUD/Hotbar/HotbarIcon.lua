@@ -24,11 +24,11 @@ return function(props)
                 ClientPlacementHandler.ExitPlacementMode()
                 globalUIState.PlacementToggleState.disable()
             end
-        else
+        elseif item and item:IsDescendantOf(globalUIState.Character.Inventory) then
             success = Net.Request(10,"Equip", item)
             if success and item:GetAttribute("ayoType") == "Placeable" then
                 item.Parent = globalUIState.Character.Instance
-                ClientPlacementHandler.EnterPlacementMode(item)
+                ClientPlacementHandler.EnterPlacementMode(item, hotbarItemState)
                 globalUIState.PlacementToggleState.enable()
             end
         end

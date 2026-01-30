@@ -3,11 +3,16 @@ local RunService = game:GetService("RunService")
 
 local UserInputService = game:GetService("UserInputService")
 
+local React = require(ReplicatedStorage.Packages.React)
+local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
 local Net = require(ReplicatedStorage.Utils.Net)
+local Signal = require(ReplicatedStorage.Utils.Signal)
 
 
 local Handler = {};
+Handler.Placed = Signal.new();
 
+local hotbarItemState:HotbarItemsContext.ContextValue;
 local userInputConn:RBXScriptConnection;
 local preRenderConn:RBXScriptConnection;
 
@@ -43,7 +48,7 @@ end
 local function onInputEnded(input: InputObject, gpe: boolean)
     if gpe or input.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
     local mousePos = UserInputService:GetMouseLocation()
-    local ray = workspace.CurrentCamera:ScreenPointToRay(mousePos.X, mousePos.Y)
+    local ray = workspace.CurrentCamera:ViewportPointToRay(mousePos.X, mousePos.Y)
     local success = canPlace and Net.Request(1, "Place", model, ray.Origin, ray.Direction)
     if success then
         print(`successfully placed {model}`)
@@ -53,7 +58,7 @@ end
 
 local function onPreRender() 
     local mousePos = UserInputService:GetMouseLocation()
-    local ray = workspace.CurrentCamera:ScreenPointToRay(mousePos.X, mousePos.Y)
+    local ray = workspace.CurrentCamera:ViewportPointToRay(mousePos.X, mousePos.Y)
     local params = RaycastParams.new()
     params.FilterType = Enum.RaycastFilterType.Include
     params.RespectCanCollide = true
@@ -75,7 +80,8 @@ local function onPreRender()
     end
 end
 
-function Handler.EnterPlacementMode(placeable:Model)
+function Handler.EnterPlacementMode(placeable:Model, contextvalue)
+    hotbarItemState = contextvalue
     model = placeable
     highlight.Adornee = model
     highlight.Enabled = true
@@ -91,7 +97,12 @@ function Handler.ExitPlacementMode()
     highlight.Adornee = nil
     highlight.Enabled = false
     deghostify()
+    for _, tuple in hotbarItemState do
+        if tuple.Item == model then
+            tuple.ChangeItem(nil)
+        end
+    end
+    model = nil::any;
 end
-
 
 return Handler;

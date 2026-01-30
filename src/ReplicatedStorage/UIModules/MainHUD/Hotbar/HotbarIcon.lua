@@ -1,22 +1,16 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local ClientPlacementHandler = require(ReplicatedStorage.AyoFramework.LogicModules.ClientPlacementHandler)
 local React = require(ReplicatedStorage.Packages.React)
 local GlobalUIContext = require(ReplicatedStorage.UIModules.Contexts.GlobalUIContext)
 local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
 local Net = require(ReplicatedStorage.Utils.Net)
 
 
-local function enterPlacementMode()
-    
-end
-
-local function exitPlacementMode()
-    
-end
-
 return function(props)
-    local hotbarItemState = React.useContext(HotbarItemsContext.Context)
-    local globalUIState = React.useContext(GlobalUIContext.Context)
+    local hotbarItemState:HotbarItemsContext.ContextValue = React.useContext(HotbarItemsContext.Context)
+    local globalUIState:GlobalUIContext.ContextValue = React.useContext(GlobalUIContext.Context)
+
     local item = React.useMemo(function() 
         return hotbarItemState[props.index].Item
     end,{hotbarItemState, props.index})
@@ -27,12 +21,15 @@ return function(props)
             success = Net.Request(10,"Unequip")
             if success and item:GetAttribute("ayoType") == "Placeable" then
                 item.Parent = globalUIState.Character.Inventory
+                ClientPlacementHandler.EnterPlacementMode(item)
+                globalUIState.PlacementToggleState.disable()
             end
         else
             success = Net.Request(10,"Equip", item)
             if success and item:GetAttribute("ayoType") == "Placeable" then
                 item.Parent = globalUIState.Character.Instance
-                print(item)
+                ClientPlacementHandler.ExitPlacementMode()
+                globalUIState.PlacementToggleState.enable()
             end
         end
 

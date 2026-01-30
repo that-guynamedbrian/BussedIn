@@ -2,6 +2,13 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local React = require(ReplicatedStorage.Packages.React)
 
+export type ContextValue = {
+    [number]:{
+        Item: (Tool | Model)?;
+        ChangeItem: (newvalue: (Tool | Model)?)->();
+    }
+}
+
 local HotbarItemsContext = React.createContext({})
 
 local function HotbarItemsContextProvider(props)

@@ -6,22 +6,18 @@ type _Receiver = Receiver & {
     _next: _Receiver;
     _prev: _Receiver | _Signal;
     _func: (...any)->();
-    _catch: (errorMessage:string, ...any)->();
     _call: (self:_Receiver, ...any)->();
 };
 -- -- public
 export type Receiver = {
     Type: "Receiver";
     Disconnect: (self:_Receiver|any)->();
-
-    Catch: (self:Receiver|any, errorhandler:(errorMessage:string, ...any)->())->(Receiver);
 };
 
 -- -- Signal type
 -- -- -- private
 type _Signal = Signal & {
     _next: _Receiver;
-    _prev: _Receiver | _Signal;
 };
 -- -- -- public
 export type Signal = {
@@ -30,6 +26,7 @@ export type Signal = {
 
     Fire: (self:_Signal|any, ...any)->();
     Connect: (self:_Signal|any, callback:(...any)->(...any))->(Receiver);
+    DisconnectAll: (self:_Signal|any)->();
     Once: (self:_Signal|any, callback:(...any)->(...any))->(Receiver);
     Wait: (self:_Receiver|any)->(...any);
 };
@@ -39,37 +36,37 @@ local Receiver = {}::_Receiver&{[any]:any};
 Signal.__index = Signal;
 Receiver.__index = Receiver;
 
+local coroutines = {};
 
 -- Functions
 -- -- Receiver
 -- -- -- private
 function Receiver:_call(...)
-    local success, errorMessage = (pcall::any)(self._func, ...);
-    if not success then
-        if self._catch then
-            self._catch(errorMessage, ...);
-        else
-            error(errorMessage)
-        end
+    if #coroutines == 0 then
+        local co = coroutine.create(function(func, ...)
+            while true do
+                func(...);
+                coroutine.yield();
+            end
+        end);
+        task.spawn(co);
+        table.insert(coroutines, co);
+    else
+        local co = table.remove(coroutines);
+        task.spawn(co,...);
+        table.insert(coroutines, co);
     end
 end
 
 -- -- -- public
-function Receiver:Catch(errorhandler)
-    assert(self._catch == nil, "error handler function already attached to receiver");
-    assert(typeof(errorhandler) == "function", "error handler must be a function");
-    (self::any)._catch = errorhandler;
-    return self;
-end;
-
 function Receiver:Disconnect()
-    local nextReceiver, prevReceiver = self._next, self._prev
+    local nextReceiver, prevReceiver = self._next, self._prev;
     if nextReceiver then 
         nextReceiver._prev = prevReceiver;
     end
     prevReceiver._next = nextReceiver;
     table.clear(self);
-end;
+end
 
 -- -- Signal
 -- -- -- public
@@ -79,7 +76,7 @@ function Signal:Fire(...)
         receiver:_call(...);
         receiver = receiver._next;
     end
-end;
+end
 
 function Signal:Connect(callback)
     assert(typeof(callback) == "function", "callback must be a function");
@@ -95,17 +92,27 @@ function Signal:Connect(callback)
     end
     (self::any)._next = receiver;
     return setmetatable(receiver, Receiver)::any
-end;
+end
+
+function Signal:DisconnectAll()
+    local receiver = self._next;
+    while receiver ~= nil do
+        local temp = receiver._next;
+        table.clear(receiver);
+        receiver = temp;
+    end
+    self.next = nil;
+end
 
 function Signal:Once(callback)
     assert(typeof(callback) == "function", "callback must be a function");
     local receiver:Receiver;
     receiver = self:Connect(function(...)
+        receiver:Disconnect()
         callback(...);
-        receiver:Disconnect();
     end);
     return receiver;
-end;
+end
 
 function Signal:Wait()
     local co = coroutine.running();
@@ -118,8 +125,8 @@ end
 function Signal:Destroy()
     local receiver = self._next;
     while receiver ~= nil do
-        local temp = receiver._next
-        receiver:Disconnect();
+        local temp = receiver._next;
+        table.clear(receiver);
         receiver = temp;
     end
     table.clear(self);
@@ -131,8 +138,7 @@ function Signal.new(self, ...):Signal
         Type = "Signal";
     }::any;
     self._next = nil;
-    self._prev = nil;
     return setmetatable(self, Signal)::any;
 end
 
-return Signal :: {new:()->Signal}
+return Signal :: {new:()->Signal};

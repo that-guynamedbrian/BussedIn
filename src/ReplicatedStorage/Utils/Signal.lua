@@ -49,11 +49,11 @@ function Receiver:_call(...)
                 coroutine.yield();
             end
         end);
-        task.spawn(co);
+        coroutine.resume(co);
         table.insert(coroutines, co);
     else
-        local co = table.remove(coroutines);
-        task.spawn(co,...);
+        local co = table.remove(coroutines)::thread;
+        coroutine.resume(co,...);
         table.insert(coroutines, co);
     end
 end
@@ -101,7 +101,7 @@ function Signal:DisconnectAll()
         table.clear(receiver);
         receiver = temp;
     end
-    self.next = nil;
+    (self::any)._next = nil;
 end
 
 function Signal:Once(callback)

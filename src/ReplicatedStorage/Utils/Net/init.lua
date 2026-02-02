@@ -1,9 +1,6 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local RunService = game:GetService("RunService");
 
-local Signal = require(ReplicatedStorage.Utils.Signal);
-
-
+local Signal = require("./Signal");
 
 local unreliableRemoteEvent = script:FindFirstChildOfClass("UnreliableRemoteEvent");
 local remoteEvent = script:FindFirstChildOfClass("RemoteEvent");

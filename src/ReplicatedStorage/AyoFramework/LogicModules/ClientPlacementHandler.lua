@@ -3,7 +3,6 @@ local RunService = game:GetService("RunService")
 
 local UserInputService = game:GetService("UserInputService")
 
-local React = require(ReplicatedStorage.Packages.React)
 local HotbarItemsContext = require(ReplicatedStorage.UIModules.Contexts.HotbarItemsContext)
 local Net = require(ReplicatedStorage.Utils.Net)
 local Signal = require(ReplicatedStorage.Utils.Signal)
@@ -35,7 +34,7 @@ local function ghostify()
     for _, instance in model:GetDescendants() do
         if not instance:IsA("BasePart") then continue end
         transparencies[instance] = instance.Transparency
-        instance.Transparency = instance.Transparency - 0.5
+        instance.Transparency = instance.Transparency + 0.5
     end
 end
 
@@ -84,7 +83,7 @@ function Handler.EnterPlacementMode(placeable:Model, contextvalue)
     hotbarItemState = contextvalue
     model = placeable
     highlight.Adornee = model
-    highlight.Enabled = true
+    --highlight.Enabled = true
     ghostify()
     preRenderConn = RunService.PreRender:Connect(onPreRender)
     userInputConn = UserInputService.InputEnded:Connect(onInputEnded)

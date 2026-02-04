@@ -24,7 +24,7 @@ local function ButtonIcon(imageid:string, activatedFunc:((any)->any)?)
 end
 
 return function()
-    local globals = React.useContext(GlobalUIContext.Context)
+    local globals: GlobalUIContext.ContextValue = React.useContext(GlobalUIContext.Context)
     positionIndex = -1
     return React.createElement("ImageLabel", {
         ScaleType = Enum.ScaleType.Fit,
@@ -46,7 +46,9 @@ return function()
 
         ["Avatar"] = ButtonIcon("rbxassetid://104956935339886"),
 
-        ["Transport"] = ButtonIcon("rbxassetid://139449258354411"),
+        ["Transport"] = ButtonIcon("rbxassetid://139449258354411", globals.TransportationToggleState.enable),
+
+        ["Shop"] = ButtonIcon("rbxassetid://123467898068713"),
 
         ["Anim"] = React.createElement("ImageButton", {
             ScaleType = Enum.ScaleType.Fit,

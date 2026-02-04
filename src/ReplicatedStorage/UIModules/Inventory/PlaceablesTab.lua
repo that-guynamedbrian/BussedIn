@@ -50,6 +50,7 @@ local function ItemIcon(props)
 	}, {
 		["ImageLabel"] = React.createElement("ImageLabel", {
 			ScaleType = Enum.ScaleType.Fit,
+			Image = props.instance:GetAttribute("icon"),
 			BackgroundTransparency = 1,
 			Position = UDim2.new(0.227649018, 0, 0.192578718, 0),
 			Size = UDim2.new(0.527449369, 0, 0.493510336, 0),

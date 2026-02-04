@@ -8,6 +8,7 @@ export type ContextValue = {
     HUDToggleState: ReactUtils.toggleState;
     InventoryToggleState: ReactUtils.toggleState;
     PlacementToggleState: ReactUtils.toggleState;
+    TransportationToggleState: ReactUtils.toggleState;
     Character: Types.CharacterAyo;
 }
 
@@ -22,18 +23,18 @@ local GlobalUIContext = React.createContext({
     HUDToggleState = toggleState;
     InventoryToggleState = toggleState;
     PlacementToggleState = toggleState;
+    TransportationToggleState = toggleState;
     Character = {};
 })
 
 local function GlobalUIContextProvider(props)
-    local HUDToggleState = ReactUtils.useToggleState(true)
-    local InventoryToggleState = ReactUtils.useToggleState(false)
-    local PlacementToggleState = ReactUtils.useToggleState(false)
     
-    local value = {
-        HUDToggleState = HUDToggleState;
-        InventoryToggleState = InventoryToggleState;
-        PlacementToggleState = PlacementToggleState;
+    local value: ContextValue= {
+        HUDToggleState = ReactUtils.useToggleState(true);
+        InventoryToggleState = ReactUtils.useToggleState(false);
+        PlacementToggleState = ReactUtils.useToggleState(false);
+        TransportationToggleState = ReactUtils.useToggleState(false);
+
         Character = props.value.CharReplica.Data;
     }
     

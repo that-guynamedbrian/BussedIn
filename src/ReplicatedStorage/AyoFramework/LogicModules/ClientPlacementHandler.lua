@@ -22,7 +22,7 @@ local highlight = Instance.new("Highlight")
 highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 highlight.FillTransparency = 1
 highlight.OutlineTransparency = 0
-highlight.Parent = workspace
+highlight.Parent = workspace:FindFirstChild("UI_LABS_CLEANUP") or workspace
 highlight.Enabled = false
 
 local VALID_COLOR = Color3.new(0.5,1,0.5)

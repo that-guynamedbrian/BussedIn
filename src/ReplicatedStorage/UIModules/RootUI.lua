@@ -1,5 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local Transportation = require(script.Parent.Transportation)
 local React = require(ReplicatedStorage.Packages.React)
 local BackpackItemsContext = require(ReplicatedStorage.UIModules.Contexts.BackpackItemsContext)
 local GlobalUIContext = require(ReplicatedStorage.UIModules.Contexts.GlobalUIContext)
@@ -11,11 +12,12 @@ local ReactUtils = require(ReplicatedStorage.Utils.ReactUtils)
 
 
 local function MainUIs(props)
-    local globals = React.useContext(GlobalUIContext.Context)
+    local globals: GlobalUIContext.ContextValue = React.useContext(GlobalUIContext.Context)
     return React.createElement(React.Fragment,nil, {
         UIStroke = React.createElement("UIStroke"),
         MainHUD = globals.HUDToggleState.on and React.createElement(MainHUD),
-        Inventory = globals.InventoryToggleState.on and React.createElement(Inventory)
+        Inventory = globals.InventoryToggleState.on and React.createElement(Inventory),
+        Transportation = globals.TransportationToggleState.on and React.createElement(Transportation)
     })
 end
 

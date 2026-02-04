@@ -8,6 +8,13 @@ local React = require(ReplicatedStorage.Packages.React)
 local ReactRoblox = require(ReplicatedStorage.Packages.ReactRoblox)
 local UILabs = require(ReplicatedStorage.Packages.UILabs)
 
+local cleanupFolder = workspace:FindFirstChild("UI_LABS_CLEANUP")
+local clone = cleanupFolder:Clone()
+clone.Parent = workspace
+for _, instance in clone:GetChildren() do
+    instance:Destroy()
+end
+
 local story = {
     react = React;
     reactRoblox = ReactRoblox;
@@ -21,6 +28,7 @@ local story = {
         janitor:Add(char.Instance)
         janitor:Add(char.Backpack)
         janitor:Add(char.Inventory)
+        janitor:Add(cleanupFolder)
         
         return React.createElement(RootUI, {
             backpackReplica = {

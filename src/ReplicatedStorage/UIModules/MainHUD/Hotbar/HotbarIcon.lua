@@ -68,7 +68,7 @@ return function(props)
         ["ImageLabel"] = (hotbarItemState[props.index].Item ~= nil) and React.createElement("ImageLabel", {
             ScaleType = Enum.ScaleType.Fit,
             BorderColor3 = Color3.fromRGB(0, 0, 0),
-            Image = item:IsA("Tool") and item.TextureId or item:GetAttribute("Icon"),
+            Image = item:IsA("Tool") and item.TextureId or item:GetAttribute("icon"),
             BackgroundTransparency = 1,
             Position = UDim2.new(0.130262032, 0, 0.272099227, 0),
             

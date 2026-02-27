@@ -2,8 +2,16 @@ local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
-local backpackFolder = ReplicatedStorage.AyoFramework.BackpackFolder
-local inventoryFolder = ReplicatedStorage.AyoFramework.InventoryFolder
+local backpackFolder do
+    backpackFolder = ReplicatedStorage.AyoFramework:FindFirstChild("BackpackFolder") or Instance.new("Folder")
+    backpackFolder.Name = "BackpackFolder"
+    backpackFolder.Parent = ReplicatedStorage.AyoFramework
+end
+local inventoryFolder do
+    inventoryFolder = ReplicatedStorage.AyoFramework:FindFirstChild("InventoryFolder")
+    inventoryFolder.Name = "InventoryFolder"
+    inventoryFolder.Parent = ReplicatedStorage.AyoFramework
+end
 
 local Placeable = require(script.Parent.Placeable)
 local Tool = require(script.Parent.Tool)

@@ -43,9 +43,18 @@ end
 
 local function GetUnits(folder:Folder, ayoType:string)
    local tbl = {};
+   local errored = {}
    for _, instance in folder:GetChildren() do
-      ValidateUnit(instance, ayoType);
-      tbl[instance:GetAttribute("ayoKey")] = instance;
+      local success, error_message = pcall(ValidateUnit, instance, ayoType);
+      if success then
+         tbl[instance:GetAttribute("ayoKey")] = instance;
+      else
+         errored[instance] = error_message
+      end
+   end
+   if #errored ~= 0 then 
+      print("[ERROR] Invalid Assets, view table below for more information")
+      print(errored)
    end
    return tbl;
 end

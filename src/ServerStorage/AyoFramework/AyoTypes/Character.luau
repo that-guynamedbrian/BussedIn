@@ -1,4 +1,5 @@
 local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local backpackFolder = ReplicatedStorage.AyoFramework.BackpackFolder
@@ -55,6 +56,8 @@ end
 
 
 function Character.new(rootinstance:Model)
+    local player = Players:GetPlayerFromCharacter(rootinstance)
+    local char_ayoKey = player and player.UserId or rootinstance:GetAttribute("ayoKey")
     local unitKey = HttpService:GenerateGUID(false)
     local backpack = Instance.new("Folder")
     backpack.Name = unitKey
@@ -91,8 +94,11 @@ function Character.new(rootinstance:Model)
         end
     end
 
-    local self = {
+    local self:Types.CharacterAyo = {
+        AyoType = player and "Player";
+        PlayerObject = player; -- if player doesn't exist, PlayerObject is not set
         Name = rootinstance.Name;
+        AyoKey = char_ayoKey;
         UnitKey = unitKey;
         Instance = rootinstance;
         Backpack = backpack;
@@ -100,6 +106,7 @@ function Character.new(rootinstance:Model)
         Changed = Signal.new();
     };
 
+    rootinstance:SetAttribute("ayoType", player and "Player" or Character.AyoType)
     rootinstance:SetAttribute("unitKey", self.UnitKey);
     rootinstance:SetAttribute("name", rootinstance.Name);
     characters_cache[unitKey] = self

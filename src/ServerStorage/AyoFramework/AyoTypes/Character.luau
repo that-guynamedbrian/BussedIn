@@ -57,7 +57,7 @@ end
 
 function Character.new(rootinstance:Model)
     local player = Players:GetPlayerFromCharacter(rootinstance)
-    local char_ayoKey = player and player.UserId or rootinstance:GetAttribute("ayoKey")
+    local char_ayoKey = player and tostring(player.UserId) or rootinstance:GetAttribute("ayoKey")
     local unitKey = HttpService:GenerateGUID(false)
     local backpack = Instance.new("Folder")
     backpack.Name = unitKey

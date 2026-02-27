@@ -5,6 +5,7 @@ local PlaceablesTab = require(script.PlaceablesTab)
 local ToolsTab = require(script.ToolsTab)
 local React = require(ReplicatedStorage.Packages.React)
 local GlobalUIContext = require(ReplicatedStorage.UIModules.Contexts.GlobalUIContext)
+local ReactRoblox = require("Packages.ReactRoblox")
 
 local function CategoryButton(props)
 	local onClick = React.useCallback(function()
@@ -40,6 +41,9 @@ local function CategoryButton(props)
 	})
 end
 
+export type v = {
+	read number
+}
 local function InventoryTab(props)
 	local currentTab, setTab = React.useState("TOOLS")
 	return React.createElement("Frame", {
